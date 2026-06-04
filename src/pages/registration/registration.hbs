@@ -46,12 +46,13 @@
         type = 'password'
         name = 'confirm_password'
       }}
-
-      {{> button
-        label = 'Зарегистрироваться'
-        modifier = 'registration'
-        type = 'submit'
-      }}
+      <div class="auth__button-wrapper auth__button-wrapper_registration">
+        {{> button
+          label = 'Зарегистрироваться'
+          modifier = 'registration'
+          type = 'submit'
+        }}        
+      </div>
 
       {{> link
         href = '#chats'

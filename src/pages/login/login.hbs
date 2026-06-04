@@ -16,12 +16,13 @@
         type = 'password'
         name = 'password'
       }}
-
-      {{> button
-        label = 'Авторизоваться'
-        modifier = 'login'
-        type = 'submit'
-      }}
+      <div class="auth__button-wrapper auth__button-wrapper_login">
+        {{> button
+          label = 'Авторизоваться'
+          modifier = 'login'
+          type = 'submit'
+        }}
+      </div>
 
       {{> link
         href = '#register'
