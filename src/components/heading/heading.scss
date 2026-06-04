@@ -1,0 +1,9 @@
+@use '../../styles/variables' as *;
+
+.heading {
+  margin: 0;
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: $font-weight-medium;
+  text-align: center;
+}

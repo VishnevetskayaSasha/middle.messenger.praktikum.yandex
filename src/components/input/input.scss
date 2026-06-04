@@ -1,0 +1,32 @@
+@use '../../styles/variables' as *;
+
+.input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 280px;
+}
+
+.input__label {
+  font-size: 9px;
+  line-height: 9px;
+  color: $color-muted;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.input__field {
+  border: none;
+  border-bottom: 1px $color-primary solid;
+  padding: 5px 0 6px;
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.input__field:focus-visible {
+  outline: none;
+}
+
+.input:has(.input__field:not(:placeholder-shown)) .input__label {
+  opacity: 1;
+}

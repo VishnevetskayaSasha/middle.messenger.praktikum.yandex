@@ -1,0 +1,29 @@
+@use '../../styles/variables' as *;
+
+.button {
+  padding: 12px 0;
+  width: 100%;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  background: $color-primary;
+  color: $color-white;
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: $font-weight-medium;
+  opacity: 1;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.button:hover {
+  opacity: .7;
+}
+
+.button_login {
+  margin-top: 144px;
+}
+
+.button_registration {
+  margin-top: 62px;
+}

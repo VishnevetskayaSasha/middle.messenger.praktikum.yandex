@@ -1,0 +1,21 @@
+.auth {
+  margin: 0;
+  height: calc(100vh - 16px);
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+}
+
+.auth__wrapper {
+  max-width: 340px;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.14);
+  border-radius: 16px;
+  padding: 50px 30px 30px;
+  margin: 0 auto;
+}
+
+.auth__form {
+  margin-top: 40px;
+}
+
+

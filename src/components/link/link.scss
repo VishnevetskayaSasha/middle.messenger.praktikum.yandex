@@ -1,0 +1,12 @@
+@use '../../styles/variables' as *;
+
+.link {
+  font-size: 11px;
+  line-height: 11px;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  color: $color-primary;
+  text-align: center;
+  display: block;
+  margin-top: 14px;
+}
