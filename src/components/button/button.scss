@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins.scss' as *;
 
 .button {
   padding: 12px 0;
@@ -13,9 +14,5 @@
   font-weight: $font-weight-medium;
   opacity: 1;
   cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-
-.button:hover {
-  opacity: .7;
+  @include hover-opacity;
 }
