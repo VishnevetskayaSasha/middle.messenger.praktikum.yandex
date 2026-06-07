@@ -1,0 +1,56 @@
+<main class="chats">
+  <div class="chats__wrapper">
+    <div class="chats__profile-wrapper">
+      {{> link
+        modifier = "profile"
+        href = "#profile"
+        text = "Профиль"
+      }}
+      <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.353554 8.35355L4.35355 4.35355L0.353554 0.353546" stroke="#999999"/>
+      </svg>
+    </div>
+    
+    <form class="search">
+      <input
+        type="search"
+        name="search"
+        class="search__input"
+        placeholder="Поиск"
+      >
+      <img
+        class="search__ico"
+        src="/src/assets/img/magnifier.svg"
+        alt="Поиск"
+      >
+    </form>
+
+    <aside class="sidebar">
+      <nav>
+        <ul class="chat-list">
+          {{#each chats}}
+            {{> chatItem}}
+          {{/each}}
+        </ul>
+      </nav>
+    </aside>
+  </div>
+  <div class="chats__content">
+     <div class="chats__empty-wrapper">
+        <p class="chats__empty">Выберите чат чтобы отправить сообщение</p>
+     </div>
+
+    <form class="chats__message">
+      {{> input
+        type="text"
+        name="message"
+        label="Сообщение..."
+      }}
+
+      {{> button
+        type="submit"
+        label ="→"
+      }}
+    </form>
+  </div>
+</main>

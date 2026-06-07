@@ -1,0 +1,64 @@
+<main class="auth">
+  <div class="auth__wrapper">
+     {{> heading
+     text = "Регистрация"
+     }}
+
+    <form action="" method="post" class="auth__form">
+      {{> input 
+      label = "Почта"
+      type = "text"
+      name = "email"
+      }}
+
+      {{> input 
+        label = "Логин"
+        type = "text"
+        name = "login"
+      }}
+
+      {{> input 
+        label = "Имя"
+        type = "text"
+        name = "first_name"
+      }}
+
+      {{> input 
+        label = "Фамилия"
+        type = "text"
+        name = "second_name"
+      }}
+
+      {{> input 
+        label = "Телефон"
+        type = "tel"
+        name = "phone"
+      }}
+
+      {{> input 
+        label = "Пароль"
+        type = "password"
+        name = "password"
+      }}
+
+      {{> input 
+        label = "Пароль (ещё раз)"
+        type = "password"
+        name = "confirm_password"
+      }}
+      <div class="auth__button-wrapper auth__button-wrapper_registration">
+        {{> button
+          label = "Зарегистрироваться"
+          modifier = "registration"
+          type = "submit"
+        }}        
+      </div>
+
+      {{> link
+        modifier = "default"
+        href = "#chats"
+        text = "Войти"
+      }}
+    </form>
+  </div>
+</main>
