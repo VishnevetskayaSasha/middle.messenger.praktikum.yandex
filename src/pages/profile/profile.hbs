@@ -1,0 +1,116 @@
+<main class="profile">
+  <aside class="profile__sidebar">
+    <a
+      href="#chats"
+      class="profile__back"
+      aria-label="Назад к чатам"
+    >
+    </a>
+  </aside>
+
+  <section class="profile__content">
+    <div class="profile__header">
+      <div class="profile__avatar-wrapper">
+        <img
+          src="img/avatar.jpg"
+          alt="avatar"
+          class="profile__avatar"
+        />
+
+        <span class="profile__avatar-overlay">
+          Поменять<br>
+          аватар
+        </span>
+      </div>
+      {{> heading
+        text = "Иван"
+        modifier = "profile"
+      }}
+    </div>
+
+    <div class="profile__info">
+      {{> profileField
+        label="Почта"
+        name="email"
+        type="email"
+        value="pochta@yandex.ru"
+      }}
+
+      {{> profileField
+        label="Логин"
+        name="login"
+        type="text"
+        value="ivanivanov"
+      }}
+
+      {{> profileField
+        label="Имя"
+        name="first_name"
+        type="text"
+        value="Иван"
+      }}
+
+      {{> profileField
+        label="Фамилия"
+        name="second_name"
+        type="text"
+        value="Иванов"
+      }}
+
+      {{> profileField
+        label="Имя в чате"
+        name="display_name"
+        type="text"
+        value="Иван"
+      }}
+
+      {{> profileField
+        label="Телефон"
+        name="phone"
+        type="tel"
+        value="+7 (909) 967 30 30"
+      }}
+    </div>
+
+    <div class="profile__change-password">
+      {{> profileField 
+        label = "Старый пароль"
+        type = "password"
+        name = "old_password"
+        value = "•••••••••"
+      }}
+      {{> profileField 
+        label = "Новый пароль"
+        type = "password"
+        name = "new_password"
+        value = "•••••••••"
+      }}
+      {{> profileField 
+        label = "Повторите новый пароль"
+        type = "password"
+        name = "repeat_password"
+        value = "•••••••••"
+      }}
+    </div>
+
+    <nav class="profile__actions">
+      {{> link
+        modifier="action"
+        href="#profile"
+        text="Изменить данные"
+      }}
+
+      {{> link
+        modifier="action"
+        href="#profile"
+        text="Изменить пароль"
+      }}
+
+      {{> link
+        modifier="logout"
+        href="#"
+        text="Выйти"
+      }}
+    </nav>
+  </section>
+</main>

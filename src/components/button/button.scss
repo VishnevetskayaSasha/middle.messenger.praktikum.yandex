@@ -1,0 +1,18 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins.scss' as *;
+
+.button {
+  padding: 12px 0;
+  width: 100%;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  background: $color-primary;
+  color: $color-white;
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: $font-weight-medium;
+  opacity: 1;
+  cursor: pointer;
+  @include hover-opacity;
+}
