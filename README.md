@@ -19,7 +19,7 @@
 ---
 
  🔥 [Макет в Figma](https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=12-54&t=g2XkTTQav3DHTNNJ-0)  
- ✅ [Деплой сайта]()
+ ✅ [Деплой сайта](https://vishnevetskayasasha-messenger.netlify.app/)
 
 ---
 
