@@ -3,8 +3,8 @@
     <div class="chats__profile-wrapper">
       {{> link
         modifier = "profile"
-        href = '#chats'
-        text = 'Профиль'
+        href = "#profile"
+        text = "Профиль"
       }}
       <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0.353554 8.35355L4.35355 4.35355L0.353554 0.353546" stroke="#999999"/>
@@ -36,6 +36,21 @@
     </aside>
   </div>
   <div class="chats__content">
-    <p class="chats__empty">Выберите чат чтобы отправить сообщение</p>
+     <div class="chats__empty-wrapper">
+        <p class="chats__empty">Выберите чат чтобы отправить сообщение</p>
+     </div>
+
+    <form class="chats__message">
+      {{> input
+        type="text"
+        name="message"
+        label="Сообщение..."
+      }}
+
+      {{> button
+        type="submit"
+        label ="→"
+      }}
+    </form>
   </div>
 </main>

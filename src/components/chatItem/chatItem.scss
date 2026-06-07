@@ -9,15 +9,15 @@
   border-top: 1px $color-line solid;
   gap: 10px;
   @include transition(background-color);
-}
 
-.chat-item:hover {
-  cursor: pointer;
-  background-color: #E4EDFD;
-}
+  &:hover {
+    cursor: pointer;
+    background-color: $color-chatHover;
+  }
 
-.chat-item:last-child {
-  border-bottom: 1px $color-line solid;
+  &:last-child {
+    border-bottom: 1px $color-line solid;
+  }
 }
 
 .chat-item__avatar {
@@ -25,7 +25,7 @@
   height: 47px;
 }
 
-.chat-item__text-wrapper{
+.chat-item__text-wrapper {
   display: flex;
   flex-direction: column;
   gap: 4px;

@@ -4,12 +4,14 @@ import inputTemplate from './components/input/input.hbs?raw';
 import linkTemplate from './components/link/link.hbs?raw';
 import headingTemplate from './components/heading/heading.hbs?raw';
 import chatItemTemplate from './components/chatItem/chatItem.hbs?raw';
+import profileFieldTemplate from './components/profileField/profileField.hbs?raw';
 
 import loginTemplate from './pages/login/login.hbs?raw';
 import registrationTemplate from './pages/registration/registration.hbs?raw';
 import error404Template from './pages/error404/error404.hbs?raw';
 import error500Template from './pages/error500/error500.hbs?raw';
-import chatsTemplate from './pages/chats/chats.hbs?raw'
+import chatsTemplate from './pages/chats/chats.hbs?raw';
+import profileTemplate from './pages/profile/profile.hbs?raw'
 
 import { chats } from './mocks/chats.js';
 import eq from './helpers/eq.js';
@@ -22,6 +24,7 @@ Handlebars.registerPartial("input", inputTemplate);
 Handlebars.registerPartial("link", linkTemplate);
 Handlebars.registerPartial("heading", headingTemplate);
 Handlebars.registerPartial("chatItem", chatItemTemplate);
+Handlebars.registerPartial("profileField", profileFieldTemplate);
 Handlebars.registerHelper("eq", eq);
 
 
@@ -50,12 +53,15 @@ function render() {
       app!.innerHTML = Handlebars.compile(chatsTemplate)({chats});
       break;
 
+    case '#profile':
+      app!.innerHTML = Handlebars.compile(profileTemplate)({});
+      break;
+
     default:
       app!.innerHTML = Handlebars.compile(error404Template)({});
       break;
   }
 }
-
 
 window.addEventListener('hashchange', render);
 render();
