@@ -13,8 +13,8 @@ import error500Template from './pages/error500/error500.hbs?raw';
 import chatsTemplate from './pages/chats/chats.hbs?raw';
 import profileTemplate from './pages/profile/profile.hbs?raw'
 
-import { chats } from './mocks/chats.js';
-import eq from './helpers/eq.js';
+import { chats } from './mocks/chats';
+import eq from './helpers/eq';
 
 import './styles/styles.scss';
 
