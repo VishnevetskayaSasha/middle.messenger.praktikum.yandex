@@ -199,5 +199,4 @@ export const chats = [
       time: "1 Апреля 2026"
     },
   },
-
 ];
