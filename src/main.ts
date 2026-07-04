@@ -1,13 +1,19 @@
 import Handlebars from "handlebars";
-import buttonTemplate from './components/button/button.hbs?raw';
-import inputTemplate from './components/input/input.hbs?raw';
-import linkTemplate from './components/link/link.hbs?raw';
-import headingTemplate from './components/heading/heading.hbs?raw';
+import { registerComponent } from './framework';
+
+// components
+import { Button } from './components/button';
+import { Input } from './components/input';
+import { Link } from './components/link';
+import { Heading } from './components/heading';
+
 import chatItemTemplate from './components/chatItem/chatItem.hbs?raw';
 import profileFieldTemplate from './components/profileField/profileField.hbs?raw';
 
-import loginTemplate from './pages/login/login.hbs?raw';
-import registrationTemplate from './pages/registration/registration.hbs?raw';
+// pages
+import { LoginPage } from './pages/login';
+import { RegistrationPage } from './pages/registration';
+
 import error404Template from './pages/error404/error404.hbs?raw';
 import error500Template from './pages/error500/error500.hbs?raw';
 import chatsTemplate from './pages/chats/chats.hbs?raw';
@@ -18,11 +24,11 @@ import eq from './helpers/eq';
 
 import './styles/styles.scss';
 
+registerComponent(Button);
+registerComponent(Input);
+registerComponent(Link);
+registerComponent(Heading);
 
-Handlebars.registerPartial("button", buttonTemplate);
-Handlebars.registerPartial("input", inputTemplate);
-Handlebars.registerPartial("link", linkTemplate);
-Handlebars.registerPartial("heading", headingTemplate);
 Handlebars.registerPartial("chatItem", chatItemTemplate);
 Handlebars.registerPartial("profileField", profileFieldTemplate);
 Handlebars.registerHelper("eq", eq);
@@ -33,14 +39,19 @@ function render() {
   const app = document.querySelector('#app'); 
   
   switch (route) {
-    case '':
-      app!.innerHTML = Handlebars.compile(loginTemplate)({});
+    case '': {
+      const page = new LoginPage();
+      app!.innerHTML = '';
+      app!.append(page.element()!);
       break;
+    }
+    case '#register': {
+      const page = new RegistrationPage();
+      app!.innerHTML = '';
+      app!.append(page.element()!);
 
-    case '#register':
-      app!.innerHTML = Handlebars.compile(registrationTemplate)({});
       break;
-
+    }
     case '#404':
       app!.innerHTML = Handlebars.compile(error404Template)({});
       break;

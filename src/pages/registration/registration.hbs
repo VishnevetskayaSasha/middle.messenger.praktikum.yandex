@@ -1,64 +1,71 @@
 <main class="auth">
   <div class="auth__wrapper">
-     {{> heading
-     text = "Регистрация"
-     }}
+     {{{ Heading
+      text = "Регистрация"
+     }}}
 
     <form action="" method="post" class="auth__form">
-      {{> input 
-      label = "Почта"
-      type = "text"
-      name = "email"
-      }}
+      {{{ Input 
+        label = "Почта"
+        type = "text"
+        name = "email"
+        ref = "email"
+      }}}
 
-      {{> input 
+      {{{ Input 
         label = "Логин"
         type = "text"
         name = "login"
-      }}
+        ref = "login"
+      }}}
 
-      {{> input 
+      {{{ Input 
         label = "Имя"
         type = "text"
         name = "first_name"
-      }}
+        ref = "first_name"
+      }}}
 
-      {{> input 
+      {{{ Input 
         label = "Фамилия"
         type = "text"
         name = "second_name"
-      }}
+        ref = "second_name"
+      }}}
 
-      {{> input 
+      {{{ Input 
         label = "Телефон"
         type = "tel"
         name = "phone"
-      }}
+        ref = "phone"
+      }}}
 
-      {{> input 
+      {{{ Input 
         label = "Пароль"
         type = "password"
         name = "password"
-      }}
+        ref = "password"
+      }}}
 
-      {{> input 
+      {{{ Input 
         label = "Пароль (ещё раз)"
         type = "password"
         name = "confirm_password"
-      }}
+        ref = "confirm_password"
+      }}}
       <div class="auth__button-wrapper auth__button-wrapper_registration">
-        {{> button
+        {{{ Button
           label = "Зарегистрироваться"
           modifier = "registration"
           type = "submit"
-        }}        
+        }}}        
       </div>
 
-      {{> link
+      {{{ Link
         modifier = "default"
         href = "#chats"
         text = "Войти"
-      }}
+      }}}
     </form>
   </div>
 </main>
