@@ -18,7 +18,7 @@
 - Страница 500 — `/#500`
 
 
-### Реализованные возможности
+## Реализованные возможности
 
 - Компонентная архитектура;
 - Базовый класс `Block`;
@@ -31,18 +31,18 @@
 
 ---
 
- 🔥 [Макет в Figma](https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=12-54&t=g2XkTTQav3DHTNNJ-0)
- ✅ [Деплой сайта](https://vishnevetskayasasha-messenger.netlify.app/)
+- 🔥 [Макет в Figma](https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=12-54&t=g2XkTTQav3DHTNNJ-0)
+- ✅ [Деплой сайта](https://vishnevetskayasasha-messenger.netlify.app/)
 
 ---
 
 ## Установка и запуск проекта
 
-```npm install``` - Установка зависимостей
-```npm run dev``` - Запуск dev-сервера
-```npm run build``` - Сборка проекта
-```npm run start``` - Сборка + запуск production preview
-```npm run lint``` - Проверка проекта
+- `npm install` — установка зависимостей
+- `npm run dev` — запуск dev-сервера
+- `npm run build` — сборка проекта
+- `npm run start` — сборка и запуск production preview
+- `npm run lint` — запуск ESLint, Stylelint и проверки TypeScript
 
 
 ## Технологии
