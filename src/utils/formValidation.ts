@@ -4,7 +4,7 @@ export function showInputError(
   input: HTMLInputElement,
   error: string | null,
 ): void {
-  const errorElement = input.closest('.input')?.querySelector('.input__error') || 
+  const errorElement = input.closest('.input')?.querySelector('.input__error') ||
   input.closest('.profile-field')?.querySelector('.profile-field__error');
 
   if (errorElement) {
@@ -12,7 +12,7 @@ export function showInputError(
   }
 
   input.classList.toggle('input__field_error', Boolean(error));
- 
+
   const profileField = input.closest('.profile-field');
   profileField?.classList.toggle('profile__field_error',Boolean(error));
 }
