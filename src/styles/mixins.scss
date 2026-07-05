@@ -1,21 +1,17 @@
 @use './variables' as *;
-
 @mixin flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 @mixin flex-between {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 @mixin transition($property: all, $duration: .3s) {
   transition: $property $duration ease;
 }
-
 @mixin hover-opacity($value: .8, $duration: .3s) {
   transition: opacity $duration ease;
 

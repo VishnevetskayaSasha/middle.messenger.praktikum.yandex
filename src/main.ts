@@ -41,9 +41,9 @@ function renderPage(page: Block) {
   app.append(page.element()!);
 }
 
-function render() { 
-  const route = window.location.hash;  
-  
+function render() {
+  const route = window.location.hash;
+
   switch (route) {
     case '':
       renderPage(new LoginPage());
@@ -52,11 +52,11 @@ function render() {
     case '#register':
       renderPage(new RegistrationPage());
       break;
-    
+
     case '#404':
       renderPage(new Error404Page());
       break;
-    
+
     case '#500':
       renderPage(new Error500Page());
       break;

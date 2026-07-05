@@ -14,8 +14,11 @@
     "noEmit": true,
 
     /* Linting */
+    "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },

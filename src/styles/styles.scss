@@ -1,16 +1,13 @@
 @use './base';
-@use './variables.scss';
-@use './auth.scss';
-@use './chats.scss';
-@use './mixins.scss';
-@use './profile.scss';
-
-
-@use '../components/button/button.scss';
-@use '../components/input/input.scss';
-@use '../components/link/link.scss';
-@use '../components/heading/heading.scss';
-@use '../components/chatItem/chatItem.scss';
-@use '../components/profileField/profileField.scss';
-
-@use './error.scss';
+@use './variables';
+@use './auth';
+@use './chats';
+@use './mixins';
+@use './profile';
+@use '../components/button/button';
+@use '../components/input/input';
+@use '../components/link/link';
+@use '../components/heading/heading';
+@use '../components/chatItem/chatItem';
+@use '../components/profileField/profileField';
+@use './error';
