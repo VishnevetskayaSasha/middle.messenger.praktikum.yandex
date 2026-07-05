@@ -5,6 +5,8 @@ interface LinkProps extends BlockOwnProps {
   href: string;
   text: string;
   modifier?: string;
+  ref?: string;
+  dataAction?: string;
 }
 
 export class Link extends Block<LinkProps> {

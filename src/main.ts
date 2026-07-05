@@ -7,8 +7,7 @@ import { Input } from './components/input';
 import { Link } from './components/link';
 import { Heading } from './components/heading';
 import { ChatItem } from './components/chatItem';
-
-import profileFieldTemplate from './components/profileField/profileField.hbs?raw';
+import { ProfileField } from './components/profileField';
 
 // pages
 import { LoginPage } from './pages/login';
@@ -16,9 +15,7 @@ import { RegistrationPage } from './pages/registration';
 import { Error404Page } from './pages/error404';
 import { Error500Page } from './pages/error500';
 import { ChatsPage } from './pages/chats';
-
-//import profileTemplate from './pages/profile/profile.hbs?raw'
-
+import { ProfilePage } from './pages/profile';
 
 import eq from './helpers/eq';
 
@@ -29,8 +26,8 @@ registerComponent(Input);
 registerComponent(Link);
 registerComponent(Heading);
 registerComponent(ChatItem);
+registerComponent(ProfileField);
 
-Handlebars.registerPartial("profileField", profileFieldTemplate);
 Handlebars.registerHelper("eq", eq);
 
 function renderPage(page: Block) {
@@ -68,9 +65,9 @@ function render() {
       renderPage(new ChatsPage());
       break;
 
-    // case '#profile':
-    //   app!.innerHTML = Handlebars.compile(profileTemplate)({});
-    //   break;
+    case '#profile':
+      renderPage(new ProfilePage());
+      break;
 
     default:
       renderPage(new Error404Page());

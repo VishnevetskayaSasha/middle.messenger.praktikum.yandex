@@ -45,7 +45,6 @@ export class RegistrationPage extends Block {
       event.preventDefault();
 
       const isFormValid = Array.from(inputs ?? []).every((input) => validateInput(input));
-
       const isPasswordsValid = validatePasswords();
 
       if (!isFormValid || !isPasswordsValid) {

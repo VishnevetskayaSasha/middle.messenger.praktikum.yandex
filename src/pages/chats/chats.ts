@@ -15,7 +15,7 @@ export class ChatsPage extends Block<ChatsPageProps> {
   }
 
   protected componentDidMount() {
-    const form = this.element()?.querySelector('.chats__message') as HTMLFormElement | null;
+    const form = this.refs.messageForm as HTMLFormElement;
     const messageInput = form?.elements.namedItem('message') as HTMLInputElement | null;
 
     messageInput?.addEventListener('blur', () => {

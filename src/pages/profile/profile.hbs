@@ -22,95 +22,132 @@
           аватар
         </span>
       </div>
-      {{> heading
+      {{{ Heading
         text = "Иван"
         modifier = "profile"
-      }}
+      }}}
     </div>
 
-    <div class="profile__info">
-      {{> profileField
-        label="Почта"
-        name="email"
-        type="email"
-        value="pochta@yandex.ru"
-      }}
+    {{#unless isEditPasswordMode}}
+      <form class="profile__form profile__form-data" ref="dataForm">
+        <div class="profile__info">
+          {{{ ProfileField
+            label = "Почта"
+            name = "email"
+            type = "email"
+            value = user.email
+            isEditable = isEditDataMode
+          }}}
 
-      {{> profileField
-        label="Логин"
-        name="login"
-        type="text"
-        value="ivanivanov"
-      }}
+          {{{ ProfileField
+            label = "Логин"
+            name = "login"
+            type = "text"
+            value = user.login
+            isEditable = isEditDataMode
+          }}}
 
-      {{> profileField
-        label="Имя"
-        name="first_name"
-        type="text"
-        value="Иван"
-      }}
+          {{{ ProfileField
+            label = "Имя"
+            name = "first_name"
+            type = "text"
+            value = user.first_name
+            isEditable = isEditDataMode
+          }}}
 
-      {{> profileField
-        label="Фамилия"
-        name="second_name"
-        type="text"
-        value="Иванов"
-      }}
+          {{{ ProfileField
+            label = "Фамилия"
+            name = "second_name"
+            type = "text"
+            value = user.second_name
+            isEditable = isEditDataMode
+          }}}
 
-      {{> profileField
-        label="Имя в чате"
-        name="display_name"
-        type="text"
-        value="Иван"
-      }}
+          {{{ ProfileField
+            label = "Имя в чате"
+            name = "display_name"
+            type = "text"
+            value = user.display_name
+            isEditable = isEditDataMode
+          }}}
 
-      {{> profileField
-        label="Телефон"
-        name="phone"
-        type="tel"
-        value="+7 (909) 967 30 30"
-      }}
-    </div>
+          {{{ ProfileField
+            label = "Телефон"
+            name = "phone"
+            type = "tel"
+            value = user.phone
+            isEditable = isEditDataMode
+          }}}
+        </div>
+        {{#if isEditDataMode}}
+          <div class="profile__button-wrapper">
+            {{{ Button
+              type="submit"
+              label="Сохранить"
+            }}}
+          </div>
+        {{/if}}
+      </form>
+    {{/unless}}
+    {{#if isEditPasswordMode}}
+      <form class="profile__form profile__form-password" ref="passwordForm">
+        {{{ ProfileField
+          label = "Старый пароль"
+          type = "password"
+          name = "old_password"
+          value = "••••••••"
+          isEditable = true
+        }}}
 
-    <div class="profile__change-password">
-      {{> profileField 
-        label = "Старый пароль"
-        type = "password"
-        name = "old_password"
-        value = "•••••••••"
-      }}
-      {{> profileField 
-        label = "Новый пароль"
-        type = "password"
-        name = "new_password"
-        value = "•••••••••"
-      }}
-      {{> profileField 
-        label = "Повторите новый пароль"
-        type = "password"
-        name = "repeat_password"
-        value = "•••••••••"
-      }}
-    </div>
+        {{{ ProfileField
+          label = "Новый пароль"
+          type = "password"
+          name = "new_password"
+          value = "-"
+          isEditable = true
+        }}}
 
-    <nav class="profile__actions">
-      {{> link
-        modifier="action"
-        href="#profile"
-        text="Изменить данные"
-      }}
+        {{{ ProfileField
+          label = "Повторите новый пароль"
+          type = "password"
+          name = "repeat_password"
+          value = "-"
+          isEditable = true
+        }}}
 
-      {{> link
-        modifier="action"
-        href="#profile"
-        text="Изменить пароль"
-      }}
+        <div class="profile__button-wrapper">
+          {{{ Button
+            type="submit"
+            label="Сохранить"
+          }}}
+        </div>
+      </form>
+    {{/if}}  
 
-      {{> link
-        modifier="logout"
-        href="#"
-        text="Выйти"
-      }}
-    </nav>
+    {{#if isViewMode}}
+      <nav class="profile__actions">
+        {{{ Link
+          modifier = "action"
+          href = "#profile"
+          text = "Изменить данные"
+          ref="editDataLink"
+          dataAction="edit-data"
+        }}}
+
+        {{{ Link
+          modifier = "action"
+          href = "#profile"
+          text = "Изменить пароль"
+          ref="editPasswordLink"
+          dataAction="edit-password"
+        }}}
+
+        {{{ Link
+          modifier = "logout"
+          href = "#"
+          text = "Выйти"
+        }}}
+      </nav>
+    {{/if}}
   </section>
 </main>

@@ -1,21 +1,29 @@
 type FieldName = 
-                'login' 
-                | 'password' 
                 | 'first_name'
                 | 'second_name'
+                | 'login' 
                 | 'email'
+                | 'password' 
                 | 'phone'
-                | 'message';
+                | 'message'
+                | 'display_name'
+                | 'old_password'
+                | 'new_password'
+                | 'repeat_password';
+
+const nameRule = {
+  regex: /^[A-ZА-ЯЁ][a-zA-Zа-яА-ЯёЁ-]*$/,
+  error: 'Поле должно начинаться с заглавной буквы, без пробелов и цифр, допускается дефис.',
+};
+
+const passwordRule = {
+  regex: /^(?=.*[A-Z])(?=.*\d).{8,40}$/,
+  error: 'Пароль должен содержать 8–40 символов, минимум одну заглавную букву и одну цифру.',
+};
 
 const validationRules: Record<FieldName, { regex: RegExp; error: string;}> = {
-  first_name: {
-    regex: /^[A-ZА-ЯЁ][a-zA-Zа-яА-ЯёЁ-]*$/,
-    error: 'Имя должно начинаться с заглавной буквы, без пробелов и цифр, допускается дефис.',
-  },
-  second_name: {
-    regex: /^[A-ZА-ЯЁ][a-zA-Zа-яА-ЯёЁ-]*$/,
-    error: 'Фамилия должна начинаться с заглавной буквы, без пробелов и цифр, допускается дефис.',
-  },
+  first_name: nameRule,
+  second_name: nameRule,
   login: {
     regex: /^(?!\d+$)[a-zA-Z0-9_-]{3,20}$/,
     error: 'Логин должен содержать 3–20 символов, латиницей, не только цифры, без пробелов, допустимы дефис и подчёркивание.',
@@ -24,10 +32,7 @@ const validationRules: Record<FieldName, { regex: RegExp; error: string;}> = {
     regex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]+$/,
     error: 'Email должен содержать @ и точку после него, допустима только латиница.',
   },
-  password: {
-    regex: /^(?=.*[A-Z])(?=.*\d).{8,40}$/,
-    error: 'Пароль должен содержать 8–40 символов, минимум одну заглавную букву и одну цифру.',
-  },
+  password: passwordRule,
   phone: {
     regex: /^\+?\d{10,15}$/,
     error: 'Телефон должен содержать 10–15 цифр и может начинаться с плюса.',
@@ -36,6 +41,10 @@ const validationRules: Record<FieldName, { regex: RegExp; error: string;}> = {
     regex: /^(?!\s*$).+/,
     error: 'Поле не должно быть пустым.',
   },
+  display_name: nameRule,
+  old_password: passwordRule,
+  new_password: passwordRule,
+  repeat_password: passwordRule,
 };
 
 export function validateField(name: string, value: string): string | null {

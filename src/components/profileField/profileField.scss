@@ -2,13 +2,16 @@
 @use '../../styles/mixins' as *;
 
 .profile-field {
-  @include flex-between;
-  padding: 10px 0;
+  padding: 24px 0 10px;
   border-bottom: 1px solid $color-line;
 
   &:last-of-type {
     border-bottom: none;
   }
+}
+
+.profile-field__input-wrapper {
+  @include flex-between;
 }
 
 .profile-field__label {
@@ -27,4 +30,18 @@
   &:focus {
     outline: none;
   }
+}
+
+.profile-field__error {
+  display: block;
+  min-height: 14px;
+  margin-top: 4px;
+  color: #ff4d4f;
+  font-size: 11px;
+  line-height: 14px;
+  text-align: center;
+}
+
+.profile__field_error {
+  border-color: #ff4d4f;
 }
