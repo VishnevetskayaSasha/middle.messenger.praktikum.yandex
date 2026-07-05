@@ -1,5 +1,5 @@
 @use '../../styles/variables' as *;
-@use '../../styles/mixins.scss' as *;
+@use '../../styles/mixins' as *;
 
 
 .chat-item {
@@ -12,7 +12,7 @@
 
   &:hover {
     cursor: pointer;
-    background-color: $color-chatHover;
+    background-color: $color-chat-hover;
   }
 
   &:last-child {
@@ -49,6 +49,7 @@
   color: $color-muted;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   overflow: hidden;
   max-width: 193px;
@@ -75,7 +76,7 @@
   text-align: center;
   padding: 4px;
   border-radius: 50%;
-  background: $color-primary; 
+  background: $color-primary;
   color: $color-white;
   width: 20px;
   height: 20px;

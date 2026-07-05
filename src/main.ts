@@ -1,64 +1,76 @@
 import Handlebars from "handlebars";
-import buttonTemplate from './components/button/button.hbs?raw';
-import inputTemplate from './components/input/input.hbs?raw';
-import linkTemplate from './components/link/link.hbs?raw';
-import headingTemplate from './components/heading/heading.hbs?raw';
-import chatItemTemplate from './components/chatItem/chatItem.hbs?raw';
-import profileFieldTemplate from './components/profileField/profileField.hbs?raw';
+import { Block, registerComponent } from './framework';
 
-import loginTemplate from './pages/login/login.hbs?raw';
-import registrationTemplate from './pages/registration/registration.hbs?raw';
-import error404Template from './pages/error404/error404.hbs?raw';
-import error500Template from './pages/error500/error500.hbs?raw';
-import chatsTemplate from './pages/chats/chats.hbs?raw';
-import profileTemplate from './pages/profile/profile.hbs?raw'
+// components
+import { Button } from './components/button';
+import { Input } from './components/input';
+import { Link } from './components/link';
+import { Heading } from './components/heading';
+import { ChatItem } from './components/chatItem';
+import { ProfileField } from './components/profileField';
 
-import { chats } from './mocks/chats';
+// pages
+import { LoginPage } from './pages/login';
+import { RegistrationPage } from './pages/registration';
+import { Error404Page } from './pages/error404';
+import { Error500Page } from './pages/error500';
+import { ChatsPage } from './pages/chats';
+import { ProfilePage } from './pages/profile';
+
 import eq from './helpers/eq';
 
 import './styles/styles.scss';
 
+registerComponent(Button);
+registerComponent(Input);
+registerComponent(Link);
+registerComponent(Heading);
+registerComponent(ChatItem);
+registerComponent(ProfileField);
 
-Handlebars.registerPartial("button", buttonTemplate);
-Handlebars.registerPartial("input", inputTemplate);
-Handlebars.registerPartial("link", linkTemplate);
-Handlebars.registerPartial("heading", headingTemplate);
-Handlebars.registerPartial("chatItem", chatItemTemplate);
-Handlebars.registerPartial("profileField", profileFieldTemplate);
 Handlebars.registerHelper("eq", eq);
 
+function renderPage(page: Block) {
+  const app = document.querySelector('#app');
 
-function render() { 
-  const route = window.location.hash; 
-  const app = document.querySelector('#app'); 
-  
+  if (!app) {
+    throw new Error('App container not found');
+  }
+
+  app.innerHTML = '';
+  app.append(page.element()!);
+}
+
+function render() {
+  const route = window.location.hash;
+
   switch (route) {
     case '':
-      app!.innerHTML = Handlebars.compile(loginTemplate)({});
+      renderPage(new LoginPage());
       break;
 
     case '#register':
-      app!.innerHTML = Handlebars.compile(registrationTemplate)({});
+      renderPage(new RegistrationPage());
       break;
 
     case '#404':
-      app!.innerHTML = Handlebars.compile(error404Template)({});
+      renderPage(new Error404Page());
       break;
 
     case '#500':
-      app!.innerHTML = Handlebars.compile(error500Template)({});
+      renderPage(new Error500Page());
       break;
 
     case '#chats':
-      app!.innerHTML = Handlebars.compile(chatsTemplate)({chats});
+      renderPage(new ChatsPage());
       break;
 
     case '#profile':
-      app!.innerHTML = Handlebars.compile(profileTemplate)({});
+      renderPage(new ProfilePage());
       break;
 
     default:
-      app!.innerHTML = Handlebars.compile(error404Template)({});
+      renderPage(new Error404Page());
       break;
   }
 }

@@ -1,11 +1,11 @@
 <main class="chats">
   <div class="chats__wrapper">
     <div class="chats__profile-wrapper">
-      {{> link
+      {{{ Link
         modifier = "profile"
         href = "#profile"
         text = "Профиль"
-      }}
+      }}}
       <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0.353554 8.35355L4.35355 4.35355L0.353554 0.353546" stroke="#999999"/>
       </svg>
@@ -29,7 +29,12 @@
       <nav>
         <ul class="chat-list">
           {{#each chats}}
-            {{> chatItem}}
+            {{{ ChatItem
+              id = id
+              name = name
+              unreadCount = unreadCount
+              lastMessage = lastMessage
+            }}}
           {{/each}}
         </ul>
       </nav>
@@ -40,17 +45,17 @@
         <p class="chats__empty">Выберите чат чтобы отправить сообщение</p>
      </div>
 
-    <form class="chats__message">
-      {{> input
+    <form class="chats__message" ref="messageForm">
+      {{{ Input
         type="text"
         name="message"
         label="Сообщение..."
-      }}
+      }}}
 
-      {{> button
+      {{{ Button
         type="submit"
         label ="→"
-      }}
+      }}}
     </form>
   </div>
 </main>

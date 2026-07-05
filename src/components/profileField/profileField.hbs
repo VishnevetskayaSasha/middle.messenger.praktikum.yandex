@@ -1,17 +1,18 @@
 <div class="profile-field">
-  <label
-    class="profile-field__label"
-    for="{{name}}"
-  >
-    {{label}}
-  </label>
+  <div class="profile-field__input-wrapper">
+    <label class="profile-field__label" for="{{name}}">
+      {{label}}
+    </label>
 
-  <input
-    class="profile-field__input"
-    id="{{name}}"
-    name="{{name}}"
-    type="{{type}}"
-    value="{{value}}"
-    readonly
-  />
+    <input
+      class="profile-field__input"
+      id="{{name}}"
+      name="{{name}}"
+      type="{{type}}"
+      value="{{value}}"
+      {{#unless isEditable}}readonly{{/unless}}
+    />
+  </div>
+  
+  <span class="profile-field__error"></span>
 </div>

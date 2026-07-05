@@ -86,7 +86,7 @@
   font-size: 13px;
   line-height: 14px;
   color: $color-white;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(0 0 0 / 50%);
   opacity: 0;
   @include transition(opacity);
   pointer-events: none;
@@ -106,8 +106,4 @@
       border-bottom: none;
     }
   }
-}
-
-.profile__change-password {
-  display: none;
 }

@@ -1,5 +1,5 @@
 @use './variables' as *;
-@use './mixins.scss' as *;
+@use './mixins' as *;
 
 .chats {
   display: flex;
@@ -77,7 +77,7 @@
   width: 290px;
   border-radius: 5px;
   border: none;
-  background: $color-searchBg;
+  background: $color-search-bg;
   color: $color-muted;
   padding: 10px;
 

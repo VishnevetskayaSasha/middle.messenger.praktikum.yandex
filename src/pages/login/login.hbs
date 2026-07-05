@@ -1,34 +1,35 @@
 <main class="auth">
   <div class="auth__wrapper">
-     {{> heading
-     text = "Вход"
-     }}
+     {{{ Heading
+      text = "Вход"
+     }}}
 
     <form action="" method="post" class="auth__form">
-      {{> input 
-      label = "Логин"
-      type = "text"
-      name = "login"
-      }}
+      {{{ Input
+        label="Логин"
+        type="text"
+        name="login"
+      }}}
+      
+      {{{ Input
+        label="Пароль"
+        type="password"
+        name="password"
+      }}}
 
-      {{> input 
-        label = "Пароль"
-        type = "password"
-        name = "password"
-      }}
       <div class="auth__button-wrapper auth__button-wrapper_login">
-        {{> button
+        {{{ Button
           label = "Авторизоваться"
           modifier = "login"
           type = "submit"
-        }}
+        }}}
       </div>
 
-      {{> link
+      {{{ Link
         modifier = "default"
         href = "#register"
         text = "Нет аккаунта?"
-      }}
+      }}}
     </form>
   </div>
 </main>
