@@ -1,0 +1,32 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.link {
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  @include hover-opacity;
+  color: $color-primary;
+}
+
+.link_default {
+  font-size: 11px;
+  line-height: 11px;
+}
+
+.link_profile {
+  font-size: 12px;
+  line-height: 21px;
+  color: $color-muted;
+}
+
+.link_action {
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.link_logout {
+  font-size: 13px;
+  line-height: 13px;
+  color: $color-important;
+}

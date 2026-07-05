@@ -1,0 +1,153 @@
+<main class="profile">
+  <aside class="profile__sidebar">
+    <a
+      href="#chats"
+      class="profile__back"
+      aria-label="Назад к чатам"
+    >
+    </a>
+  </aside>
+
+  <section class="profile__content">
+    <div class="profile__header">
+      <div class="profile__avatar-wrapper">
+        <img
+          src="img/avatar.jpg"
+          alt="avatar"
+          class="profile__avatar"
+        />
+
+        <span class="profile__avatar-overlay">
+          Поменять<br>
+          аватар
+        </span>
+      </div>
+      {{{ Heading
+        text = "Иван"
+        modifier = "profile"
+      }}}
+    </div>
+
+    {{#unless isEditPasswordMode}}
+      <form class="profile__form profile__form-data" ref="dataForm">
+        <div class="profile__info">
+          {{{ ProfileField
+            label = "Почта"
+            name = "email"
+            type = "email"
+            value = user.email
+            isEditable = isEditDataMode
+          }}}
+
+          {{{ ProfileField
+            label = "Логин"
+            name = "login"
+            type = "text"
+            value = user.login
+            isEditable = isEditDataMode
+          }}}
+
+          {{{ ProfileField
+            label = "Имя"
+            name = "first_name"
+            type = "text"
+            value = user.first_name
+            isEditable = isEditDataMode
+          }}}
+
+          {{{ ProfileField
+            label = "Фамилия"
+            name = "second_name"
+            type = "text"
+            value = user.second_name
+            isEditable = isEditDataMode
+          }}}
+
+          {{{ ProfileField
+            label = "Имя в чате"
+            name = "display_name"
+            type = "text"
+            value = user.display_name
+            isEditable = isEditDataMode
+          }}}
+
+          {{{ ProfileField
+            label = "Телефон"
+            name = "phone"
+            type = "tel"
+            value = user.phone
+            isEditable = isEditDataMode
+          }}}
+        </div>
+        {{#if isEditDataMode}}
+          <div class="profile__button-wrapper">
+            {{{ Button
+              type="submit"
+              label="Сохранить"
+            }}}
+          </div>
+        {{/if}}
+      </form>
+    {{/unless}}
+    {{#if isEditPasswordMode}}
+      <form class="profile__form profile__form-password" ref="passwordForm">
+        {{{ ProfileField
+          label = "Старый пароль"
+          type = "password"
+          name = "old_password"
+          value = "••••••••"
+          isEditable = true
+        }}}
+
+        {{{ ProfileField
+          label = "Новый пароль"
+          type = "password"
+          name = "new_password"
+          value = "-"
+          isEditable = true
+        }}}
+
+        {{{ ProfileField
+          label = "Повторите новый пароль"
+          type = "password"
+          name = "repeat_password"
+          value = "-"
+          isEditable = true
+        }}}
+
+        <div class="profile__button-wrapper">
+          {{{ Button
+            type="submit"
+            label="Сохранить"
+          }}}
+        </div>
+      </form>
+    {{/if}}  
+
+    {{#if isViewMode}}
+      <nav class="profile__actions">
+        {{{ Link
+          modifier = "action"
+          href = "#profile"
+          text = "Изменить данные"
+          ref="editDataLink"
+          dataAction="edit-data"
+        }}}
+
+        {{{ Link
+          modifier = "action"
+          href = "#profile"
+          text = "Изменить пароль"
+          ref="editPasswordLink"
+          dataAction="edit-password"
+        }}}
+
+        {{{ Link
+          modifier = "logout"
+          href = "#"
+          text = "Выйти"
+        }}}
+      </nav>
+    {{/if}}
+  </section>
+</main>

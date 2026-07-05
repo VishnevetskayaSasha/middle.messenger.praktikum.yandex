@@ -1,0 +1,36 @@
+import { Block } from '../../framework';
+import template from './login.hbs?raw';
+import { validateInput } from '../../utils/formValidation';
+
+export class LoginPage extends Block {
+  protected template = template;
+
+  protected componentDidMount() {
+    const form = this.element()?.querySelector('.auth__form') as HTMLFormElement | null;
+
+    const inputs = form?.querySelectorAll<HTMLInputElement>('input');
+
+    inputs?.forEach((input) => {
+      input.addEventListener('blur', () => {
+        validateInput(input);
+      });
+    });
+
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const isFormValid = Array.from(inputs ?? []).every((input) => {
+        return validateInput(input);
+      });
+
+      if (!isFormValid) {
+        return;
+      }
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      console.log(data);
+    });
+  }
+}
