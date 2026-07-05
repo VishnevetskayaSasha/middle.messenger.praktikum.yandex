@@ -50,6 +50,5 @@
 * Vite;
 * Handlebars;
 * SCSS;
-* Git / GitHub;
 * Netlify;
 * ESLint, Stylelint.
