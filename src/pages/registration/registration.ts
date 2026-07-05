@@ -1,6 +1,7 @@
 import { Block } from '../../framework';
 import template from './registration.hbs?raw';
-import { validateField, validatePasswordConfirmation } from '../../utils/validation';
+import { validatePasswordConfirmation } from '../../utils/validation';
+import { showInputError, validateInput } from '../../utils/formValidation';
 
 export class RegistrationPage extends Block {
   protected template = template;
@@ -11,24 +12,13 @@ export class RegistrationPage extends Block {
     const passwordInput = form?.elements.namedItem('password') as HTMLInputElement | null;
     const confirmPasswordInput = form?.elements.namedItem('confirm_password') as HTMLInputElement | null;
 
-    const showInputError = ( input: HTMLInputElement, error: string | null) => {
-      const errorElement = input.closest('.input')?.querySelector('.input__error');
-
-      if (errorElement) {
-        errorElement.textContent = error ?? '';
-      }
-      input.classList.toggle('input__field_error', Boolean(error));
-    };
-
-    const validateInput = (input: HTMLInputElement) => {
-      const error = validateField(input.name, input.value);
-      showInputError(input, error);
-      return !error;
-    };
-
     const validatePasswords = () => {
       if (!passwordInput || !confirmPasswordInput) {
         return true;
+      }
+
+      if (confirmPasswordInput.value.trim() === '') {
+        return false;
       }
 
       const error = validatePasswordConfirmation(
