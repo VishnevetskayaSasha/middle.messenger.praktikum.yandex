@@ -1,5 +1,5 @@
 import Handlebars from "handlebars";
-import { Block, registerComponent } from './framework';
+import { registerComponent, Router } from './framework';
 
 // components
 import { Button } from './components/button';
@@ -30,50 +30,13 @@ registerComponent(ProfileField);
 
 Handlebars.registerHelper("eq", eq);
 
-function renderPage(page: Block) {
-  const app = document.querySelector('#app');
+const router = new Router('#app');
 
-  if (!app) {
-    throw new Error('App container not found');
-  }
-
-  app.innerHTML = '';
-  app.append(page.element()!);
-}
-
-function render() {
-  const route = window.location.hash;
-
-  switch (route) {
-    case '':
-      renderPage(new LoginPage());
-      break;
-
-    case '#register':
-      renderPage(new RegistrationPage());
-      break;
-
-    case '#404':
-      renderPage(new Error404Page());
-      break;
-
-    case '#500':
-      renderPage(new Error500Page());
-      break;
-
-    case '#chats':
-      renderPage(new ChatsPage());
-      break;
-
-    case '#profile':
-      renderPage(new ProfilePage());
-      break;
-
-    default:
-      renderPage(new Error404Page());
-      break;
-  }
-}
-
-window.addEventListener('hashchange', render);
-render();
+router
+  .use('/', LoginPage)
+  .use('/sign-up', RegistrationPage)
+  .use('/settings', ProfilePage)
+  .use('/messenger', ChatsPage)
+  .use('/404', Error404Page)
+  .use('/500', Error500Page)
+  .start();

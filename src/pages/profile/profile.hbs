@@ -122,13 +122,13 @@
           }}}
         </div>
       </form>
-    {{/if}}  
+    {{/if}}
 
     {{#if isViewMode}}
       <nav class="profile__actions">
         {{{ Link
           modifier = "action"
-          href = "#profile"
+          href = "/settings"
           text = "Изменить данные"
           ref="editDataLink"
           dataAction="edit-data"
@@ -136,7 +136,7 @@
 
         {{{ Link
           modifier = "action"
-          href = "#profile"
+          href = "/settings"
           text = "Изменить пароль"
           ref="editPasswordLink"
           dataAction="edit-password"
@@ -144,7 +144,7 @@
 
         {{{ Link
           modifier = "logout"
-          href = "#"
+          href = "/"
           text = "Выйти"
         }}}
       </nav>
