@@ -3,23 +3,19 @@ import template from './profile.hbs?raw';
 import { showInputError, validateInput } from '../../utils/formValidation';
 import { validatePasswordConfirmation } from '../../utils/validation';
 
-import { authController } from '../../controllers';
+import { authController, userController  } from '../../controllers';
+import type { UpdateProfileData, ChangePasswordData, User } from '../../api';
 import { router } from '../../router';
+import { getApiErrorReason } from '../../utils/getApiErrorReason';
 
 type ProfileMode = 'view' | 'edit-data' | 'edit-password';
 
-interface ProfileUser {
-  email: string;
-  login: string;
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  phone: string;
-}
-
 interface ProfilePageProps extends BlockOwnProps {
   mode: ProfileMode;
-  user: ProfileUser;
+  user: User;
+  userDisplayName: string;
+  profileFormError: string;
+  passwordFormError: string;
   isViewMode: boolean;
   isEditDataMode: boolean;
   isEditPasswordMode: boolean;
@@ -32,13 +28,18 @@ export class ProfilePage extends Block<ProfilePageProps> {
     super({
       mode: 'view',
       user: {
-        email: 'pochta@yandex.ru',
-        login: 'ivanivanov',
-        first_name: 'Иван',
-        second_name: 'Иванов',
-        display_name: 'Иван',
-        phone: '+79099673030',
+        id: 0,
+        email: '',
+        login: '',
+        first_name: '',
+        second_name: '',
+        display_name: null,
+        phone: '',
+        avatar: null,
       },
+      userDisplayName: '',
+      profileFormError: '',
+      passwordFormError: '',
       isViewMode: true,
       isEditDataMode: false,
       isEditPasswordMode: false,
@@ -49,6 +50,9 @@ export class ProfilePage extends Block<ProfilePageProps> {
     this.setProps({
       mode,
       user,
+      userDisplayName: user.display_name ?? user.first_name,
+      profileFormError: '',
+      passwordFormError: '',
       isViewMode: mode === 'view',
       isEditDataMode: mode === 'edit-data',
       isEditPasswordMode: mode === 'edit-password',
@@ -61,6 +65,10 @@ export class ProfilePage extends Block<ProfilePageProps> {
     this.initDataForm();
     this.initPasswordForm();
     this.initLogout();
+
+    if (this.props.user.id === 0) {
+      void this.loadUser();
+    }
   }
 
   private initEditDataMode() {
@@ -81,6 +89,10 @@ export class ProfilePage extends Block<ProfilePageProps> {
   }
 
   private initDataForm() {
+    if (!this.props.isEditDataMode) {
+      return;
+    }
+
     const dataForm = this.refs.dataForm as HTMLFormElement;
     const dataInputs = dataForm?.querySelectorAll<HTMLInputElement>('input');
 
@@ -90,7 +102,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
       });
     });
 
-    dataForm?.addEventListener('submit', (event) => {
+    dataForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
       const isFormValid = Array.from(dataInputs ?? []).every((input) => validateInput(input));
 
@@ -99,11 +111,41 @@ export class ProfilePage extends Block<ProfilePageProps> {
       }
 
       const formData = new FormData(dataForm);
-      const data = Object.fromEntries(formData.entries()) as unknown as ProfileUser;
+      const data = Object.fromEntries(formData.entries()) as unknown as UpdateProfileData;
 
-      console.log(data);
-      this.setMode('view', data);
+
+      try {
+        const user = await userController.updateProfile(data);
+        this.setMode('view', user);
+      } catch (error: unknown) {
+        if (error instanceof HTTPError) {
+          this.setProps({
+            profileFormError:
+              this.getProfileErrorMessage(error),
+          });
+          return;
+        }
+
+        this.setProps({
+          profileFormError:
+            'Не удалось сохранить изменения.',
+        });
+      }
     });
+  }
+
+  private getProfileErrorMessage(error: HTTPError): string {
+    const reason = getApiErrorReason(error);
+
+    if (reason === 'Login already exists') {
+      return 'Пользователь с таким логином уже существует.';
+    }
+
+    if (reason === 'Email already exists') {
+      return 'Пользователь с такой почтой уже существует.';
+    }
+
+    return 'Не удалось сохранить изменения.';
   }
 
   private initPasswordForm() {
@@ -141,11 +183,11 @@ export class ProfilePage extends Block<ProfilePageProps> {
       });
     });
 
-    passwordForm.addEventListener('submit', (event) => {
+    passwordForm.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       const isFormValid = Array.from(inputs).every((input) =>
-        validateInput(input),
+        validateInput(input)
       );
 
       const isPasswordsValid = validatePasswords();
@@ -154,13 +196,50 @@ export class ProfilePage extends Block<ProfilePageProps> {
         return;
       }
 
-      const formData = new FormData(passwordForm);
-      console.log(Object.fromEntries(formData.entries()));
-      this.setMode('view');
+      const oldPassword = passwordForm.elements.namedItem(
+        'old_password',
+      ) as HTMLInputElement;
+
+      const data: ChangePasswordData = {
+        oldPassword: oldPassword.value,
+        newPassword: newPassword.value,
+      };
+
+      try {
+        await userController.changePassword(data);
+        this.setMode('view');
+      } catch (error: unknown) {
+        if (error instanceof HTTPError) {
+          this.setProps({
+            passwordFormError:
+              this.getPasswordErrorMessage(error),
+          });
+
+          return;
+        }
+
+        this.setProps({
+          passwordFormError:
+            'Не удалось изменить пароль.',
+        });
+      }
     });
   }
 
-  private initLogout(): void {
+  private getPasswordErrorMessage(error: HTTPError): string {
+    const reason = getApiErrorReason(error);
+
+    if (
+      reason === 'Password is incorrect' ||
+      reason === 'Old password is incorrect'
+    ) {
+      return 'Неверный текущий пароль.';
+    }
+
+    return 'Не удалось изменить пароль.';
+  }
+
+  private initLogout() {
     const logoutLink = this.refs.logoutLink as HTMLAnchorElement | undefined;
     logoutLink?.addEventListener('click', async (event) => {
       event.preventDefault();
@@ -185,5 +264,17 @@ export class ProfilePage extends Block<ProfilePageProps> {
         );
       }
     });
+  }
+
+  private async loadUser(): Promise<void> {
+    try {
+      const user = await userController.getUser();
+      this.setProps({user, userDisplayName: user.display_name ?? user.first_name,});
+    } catch (error: unknown) {
+      console.error(
+        'Не удалось загрузить данные пользователя',
+        error,
+      );
+    }
   }
 }

@@ -11,8 +11,9 @@
       type="{{type}}"
       value="{{value}}"
       {{#unless isEditable}}readonly{{/unless}}
+      {{#if autocomplete}}autocomplete="{{autocomplete}}"{{/if}}
     />
   </div>
-  
+
   <span class="profile-field__error"></span>
 </div>

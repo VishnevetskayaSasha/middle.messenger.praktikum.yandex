@@ -1,9 +1,4 @@
-import {
-  AuthAPI,
-  type SignInData,
-  type SignUpData,
-  type User,
-} from '../api';
+import { AuthAPI, type SignInData, type SignUpData} from '../api';
 
 class AuthController {
   private api = new AuthAPI();
@@ -14,10 +9,6 @@ class AuthController {
 
   public async signUp(data: SignUpData): Promise<void> {
     await this.api.signUp(data);
-  }
-
-  public async getUser(): Promise<User> {
-    return this.api.getUser();
   }
 
   public async logout(): Promise<void> {

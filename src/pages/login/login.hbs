@@ -6,15 +6,17 @@
 
     <form action="" method="post" class="auth__form">
       {{{ Input
-        label="Логин"
-        type="text"
-        name="login"
+        label = "Логин"
+        type = "text"
+        name = "login"
+        autocomplete = "username"
       }}}
 
       {{{ Input
-        label="Пароль"
-        type="password"
-        name="password"
+        label = "Пароль"
+        type = "password"
+        name = "password"
+        autocomplete = "current-password"
       }}}
 
       <div class="auth__button-wrapper auth__button-wrapper_login">
@@ -22,6 +24,10 @@
           label = "Авторизоваться"
           modifier = "login"
           type = "submit"
+        }}}
+
+         {{{ FormError
+          text = formError
         }}}
       </div>
 

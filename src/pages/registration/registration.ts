@@ -1,4 +1,4 @@
-import { Block, HTTPError } from '../../framework';
+import { Block, HTTPError, type BlockOwnProps } from '../../framework';
 import { authController } from '../../controllers';
 import type { SignUpData } from '../../api';
 import { router } from '../../router';
@@ -6,8 +6,19 @@ import { router } from '../../router';
 import template from './registration.hbs?raw';
 import { validatePasswordConfirmation } from '../../utils/validation';
 import { showInputError, validateInput } from '../../utils/formValidation';
+import { getApiErrorReason } from '../../utils/getApiErrorReason';
 
-export class RegistrationPage extends Block {
+interface RegistrationPageProps extends BlockOwnProps {
+  formError: string;
+}
+
+export class RegistrationPage extends Block<RegistrationPageProps> {
+  constructor() {
+    super({
+      formError: '',
+    });
+  }
+
   protected template = template;
 
   protected componentDidMount() {
@@ -64,25 +75,37 @@ export class RegistrationPage extends Block {
 
       try {
         await authController.signUp(data);
-        const user = await authController.getUser();
-        //console.log('Текущий пользователь:', user);
         router.setAuthorized(true);
         router.go('/messenger');
       } catch (error: unknown) {
         if (error instanceof HTTPError) {
-          console.error(
-            'Ошибка регистрации:',
-            error.response,
-          );
+          this.setProps({
+            formError:
+              this.getRegistrationErrorMessage(error),
+          });
 
           return;
         }
 
-        console.error(
-          'Не удалось выполнить запрос регистрации',
-          error,
-        );
+        this.setProps({
+          formError:
+            'Не удалось зарегистрироваться. Попробуйте ещё раз.',
+        });
       }
     });
+  }
+
+  private getRegistrationErrorMessage(error: HTTPError): string {
+    const reason = getApiErrorReason(error);
+
+    if (reason === 'Login already exists') {
+      return 'Пользователь с таким логином уже существует.';
+    }
+
+    if (reason === 'User already in system') {
+      return 'Вы уже авторизованы.';
+    }
+
+    return 'Не удалось зарегистрироваться. Попробуйте ещё раз.';
   }
 }

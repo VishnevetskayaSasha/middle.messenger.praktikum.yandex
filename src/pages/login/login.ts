@@ -1,13 +1,24 @@
-import { Block, HTTPError  } from '../../framework';
+import { Block, HTTPError, type BlockOwnProps } from '../../framework';
 import { authController } from '../../controllers';
 import type { SignInData } from '../../api';
 import { router } from '../../router';
 
 import template from './login.hbs?raw';
 import { validateInput } from '../../utils/formValidation';
+import { getApiErrorReason } from '../../utils/getApiErrorReason';
 
-export class LoginPage extends Block {
+interface LoginPageProps extends BlockOwnProps {
+  formError: string;
+}
+
+export class LoginPage extends Block<LoginPageProps> {
   protected template = template;
+
+  constructor() {
+    super({
+      formError: '',
+    });
+  }
 
   protected componentDidMount() {
     const form = this.element().querySelector('.auth__form') as HTMLFormElement | null;
@@ -40,19 +51,27 @@ export class LoginPage extends Block {
         router.go('/messenger');
       } catch (error: unknown) {
         if (error instanceof HTTPError) {
-          console.error(
-            'Ошибка авторизации:',
-            error.response,
-          );
+          this.setProps({
+            formError: this.getAuthErrorMessage(error),
+          });
 
           return;
         }
 
-        console.error(
-          'Не удалось выполнить запрос авторизации',
-          error,
-        );
+        this.setProps({
+          formError: 'Не удалось войти. Попробуйте ещё раз.',
+        });
       }
     });
+  }
+  
+  private getAuthErrorMessage(error: HTTPError): string {
+    const reason = getApiErrorReason(error);
+
+    if (reason === 'Login or password is incorrect') {
+      return 'Неверный логин или пароль.';
+    }
+
+    return 'Не удалось войти. Попробуйте ещё раз.';
   }
 }

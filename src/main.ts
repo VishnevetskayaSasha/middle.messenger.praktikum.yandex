@@ -1,7 +1,7 @@
 import Handlebars from "handlebars";
 import { registerComponent } from './framework';
 import { router } from './router';
-import { authController } from './controllers';
+import { userController } from './controllers';
 
 // components
 import { Button } from './components/button';
@@ -10,6 +10,7 @@ import { Link } from './components/link';
 import { Heading } from './components/heading';
 import { ChatItem } from './components/chatItem';
 import { ProfileField } from './components/profileField';
+import { FormError } from './components/formError';
 
 // pages
 import { LoginPage } from './pages/login';
@@ -29,6 +30,7 @@ registerComponent(Link);
 registerComponent(Heading);
 registerComponent(ChatItem);
 registerComponent(ProfileField);
+registerComponent(FormError);
 
 Handlebars.registerHelper("eq", eq);
 
@@ -42,7 +44,7 @@ router
 
 async function startApp(): Promise<void> {
   try {
-    await authController.getUser();
+    await userController.getUser();
     router.start(true);
   } catch {
     router.start(false);
