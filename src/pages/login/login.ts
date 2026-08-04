@@ -1,4 +1,8 @@
-import { Block } from '../../framework';
+import { Block, HTTPError  } from '../../framework';
+import { authController } from '../../controllers';
+import type { SignInData } from '../../api';
+import { router } from '../../router';
+
 import template from './login.hbs?raw';
 import { validateInput } from '../../utils/formValidation';
 
@@ -6,7 +10,7 @@ export class LoginPage extends Block {
   protected template = template;
 
   protected componentDidMount() {
-    const form = this.element()?.querySelector('.auth__form') as HTMLFormElement | null;
+    const form = this.element().querySelector('.auth__form') as HTMLFormElement | null;
 
     const inputs = form?.querySelectorAll<HTMLInputElement>('input');
 
@@ -16,7 +20,7 @@ export class LoginPage extends Block {
       });
     });
 
-    form?.addEventListener('submit', (event) => {
+    form?.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       const isFormValid = Array.from(inputs ?? []).every((input) => {
@@ -28,9 +32,26 @@ export class LoginPage extends Block {
       }
 
       const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+      const data = Object.fromEntries(formData.entries()) as unknown as SignInData;
 
-      console.log(data);
+      try {
+        await authController.signIn(data);
+        router.go('/messenger');
+      } catch (error: unknown) {
+        if (error instanceof HTTPError) {
+          console.error(
+            'Ошибка авторизации:',
+            error.response,
+          );
+
+          return;
+        }
+
+        console.error(
+          'Не удалось выполнить запрос авторизации',
+          error,
+        );
+      }
     });
   }
 }

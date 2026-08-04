@@ -1,5 +1,6 @@
 import Handlebars from "handlebars";
-import { registerComponent, Router } from './framework';
+import { registerComponent } from './framework';
+import { router } from './router';
 
 // components
 import { Button } from './components/button';
@@ -29,8 +30,6 @@ registerComponent(ChatItem);
 registerComponent(ProfileField);
 
 Handlebars.registerHelper("eq", eq);
-
-const router = new Router('#app');
 
 router
   .use('/', LoginPage)

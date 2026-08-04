@@ -1,4 +1,8 @@
-import { Block } from '../../framework';
+import { Block, HTTPError } from '../../framework';
+import { authController } from '../../controllers';
+import type { SignUpData } from '../../api';
+import { router } from '../../router';
+
 import template from './registration.hbs?raw';
 import { validatePasswordConfirmation } from '../../utils/validation';
 import { showInputError, validateInput } from '../../utils/formValidation';
@@ -7,14 +11,14 @@ export class RegistrationPage extends Block {
   protected template = template;
 
   protected componentDidMount() {
-    const form = this.element()?.querySelector('.auth__form') as HTMLFormElement | null;
+    const form = this.element().querySelector('.auth__form') as HTMLFormElement | null;
     const inputs = form?.querySelectorAll<HTMLInputElement>('input');
     const passwordInput = form?.elements.namedItem('password') as HTMLInputElement | null;
     const confirmPasswordInput = form?.elements.namedItem('confirm_password') as HTMLInputElement | null;
 
     const validatePasswords = () => {
       if (!passwordInput || !confirmPasswordInput) {
-        return true;
+        return false;
       }
 
       if (confirmPasswordInput.value.trim() === '') {
@@ -41,7 +45,7 @@ export class RegistrationPage extends Block {
       });
     });
 
-    form?.addEventListener('submit', (event) => {
+    form?.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       const isFormValid = Array.from(inputs ?? []).every((input) => validateInput(input));
@@ -52,9 +56,32 @@ export class RegistrationPage extends Block {
       }
 
       const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+      formData.delete('confirm_password');
 
-      console.log(data);
+      const data = Object.fromEntries(
+        formData.entries(),
+      ) as unknown as SignUpData;
+
+      try {
+        await authController.signUp(data);
+        const user = await authController.getUser();
+        console.log('Текущий пользователь:', user);
+        router.go('/messenger');
+      } catch (error: unknown) {
+        if (error instanceof HTTPError) {
+          console.error(
+            'Ошибка регистрации:',
+            error.response,
+          );
+
+          return;
+        }
+
+        console.error(
+          'Не удалось выполнить запрос регистрации',
+          error,
+        );
+      }
     });
   }
 }
