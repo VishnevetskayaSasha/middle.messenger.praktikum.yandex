@@ -8,6 +8,7 @@ export class Router {
   private currentRoute: Route | null = null;
   private history: History = window.history;
   private rootQuery: string;
+  private isAuthorized = false;
 
   constructor(rootQuery: string) {
     this.rootQuery = rootQuery;
@@ -24,7 +25,9 @@ export class Router {
     return this;
   }
 
-  public start(): void {
+  public start(isAuthorized: boolean): void {
+    this.isAuthorized = isAuthorized;
+
     window.addEventListener('popstate', () => {
       this.onRoute(window.location.pathname);
     });
@@ -56,8 +59,25 @@ export class Router {
     this.onRoute(window.location.pathname);
   }
 
+  public setAuthorized(isAuthorized: boolean): void {
+    this.isAuthorized = isAuthorized;
+  }
+
   private onRoute(pathname: string): void {
-    const route = this.getRoute(pathname);
+    const guestRoutes = ['/', '/sign-up'];
+    const protectedRoutes = ['/messenger', '/settings'];
+    let availablePathname = pathname;
+
+    if (!this.isAuthorized && protectedRoutes.includes(pathname)) {
+      availablePathname = '/';
+      this.history.replaceState({}, '', availablePathname);
+    }
+    if (this.isAuthorized && guestRoutes.includes(pathname)) {
+      availablePathname = '/messenger';
+      this.history.replaceState({}, '', availablePathname);
+    }
+
+    const route = this.getRoute(availablePathname);
     if (!route) {
       const notFoundRoute = this.getRoute('/404');
       if (!notFoundRoute) {

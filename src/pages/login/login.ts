@@ -36,6 +36,7 @@ export class LoginPage extends Block {
 
       try {
         await authController.signIn(data);
+        router.setAuthorized(true);
         router.go('/messenger');
       } catch (error: unknown) {
         if (error instanceof HTTPError) {

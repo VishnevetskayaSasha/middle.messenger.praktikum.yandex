@@ -65,7 +65,8 @@ export class RegistrationPage extends Block {
       try {
         await authController.signUp(data);
         const user = await authController.getUser();
-        console.log('Текущий пользователь:', user);
+        //console.log('Текущий пользователь:', user);
+        router.setAuthorized(true);
         router.go('/messenger');
       } catch (error: unknown) {
         if (error instanceof HTTPError) {

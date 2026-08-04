@@ -1,6 +1,7 @@
 import Handlebars from "handlebars";
 import { registerComponent } from './framework';
 import { router } from './router';
+import { authController } from './controllers';
 
 // components
 import { Button } from './components/button';
@@ -37,5 +38,15 @@ router
   .use('/settings', ProfilePage)
   .use('/messenger', ChatsPage)
   .use('/404', Error404Page)
-  .use('/500', Error500Page)
-  .start();
+  .use('/500', Error500Page);
+
+async function startApp(): Promise<void> {
+  try {
+    await authController.getUser();
+    router.start(true);
+  } catch {
+    router.start(false);
+  }
+}
+
+startApp();

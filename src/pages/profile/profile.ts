@@ -1,7 +1,10 @@
-import { Block, type BlockOwnProps } from '../../framework';
+import { Block, HTTPError, type BlockOwnProps } from '../../framework';
 import template from './profile.hbs?raw';
 import { showInputError, validateInput } from '../../utils/formValidation';
 import { validatePasswordConfirmation } from '../../utils/validation';
+
+import { authController } from '../../controllers';
+import { router } from '../../router';
 
 type ProfileMode = 'view' | 'edit-data' | 'edit-password';
 
@@ -57,6 +60,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
     this.initEditPasswordMode();
     this.initDataForm();
     this.initPasswordForm();
+    this.initLogout();
   }
 
   private initEditDataMode() {
@@ -153,6 +157,33 @@ export class ProfilePage extends Block<ProfilePageProps> {
       const formData = new FormData(passwordForm);
       console.log(Object.fromEntries(formData.entries()));
       this.setMode('view');
+    });
+  }
+
+  private initLogout(): void {
+    const logoutLink = this.refs.logoutLink as HTMLAnchorElement | undefined;
+    logoutLink?.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      try {
+        await authController.logout();
+        router.setAuthorized(false);
+        router.go('/');
+      } catch (error: unknown) {
+        if (error instanceof HTTPError) {
+          console.error(
+            'Ошибка выхода из системы:',
+            error.response,
+          );
+
+          return;
+        }
+
+        console.error(
+          'Не удалось выйти из системы',
+          error,
+        );
+      }
     });
   }
 }
