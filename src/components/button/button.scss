@@ -16,3 +16,47 @@
   cursor: pointer;
   @include hover-opacity;
 }
+
+.button_modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: auto;
+  padding: 0;
+}
+
+.button_chat-menu {
+  width: 30px;
+  height: 30px;
+  background: none;
+  color: $color-text;
+}
+
+.button_attach {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $color-muted;
+}
+
+.button_send-message {
+  position: relative;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+
+  &::before {
+    content: '→';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    font-size: 18px;
+    line-height: 1;
+  }
+}

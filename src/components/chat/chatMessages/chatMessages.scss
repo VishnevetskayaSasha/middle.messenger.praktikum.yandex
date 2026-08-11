@@ -1,0 +1,16 @@
+@use '../../../styles/variables' as *;
+
+.chat-messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.chat-messages__empty {
+  margin: auto;
+  font-size: 12px;
+  color: $color-muted;
+}

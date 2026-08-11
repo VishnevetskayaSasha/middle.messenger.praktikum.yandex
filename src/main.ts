@@ -11,6 +11,7 @@ import { Heading } from './components/heading';
 import { ChatItem } from './components/chatItem';
 import { ProfileField } from './components/profileField';
 import { FormError } from './components/formError';
+import { ChatHeader, ChatFooter, ChatMessages } from './components/chat';
 
 // pages
 import { LoginPage } from './pages/login';
@@ -31,6 +32,9 @@ registerComponent(Heading);
 registerComponent(ChatItem);
 registerComponent(ProfileField);
 registerComponent(FormError);
+registerComponent(ChatHeader);
+registerComponent(ChatMessages);
+registerComponent(ChatFooter);
 
 Handlebars.registerHelper("eq", eq);
 

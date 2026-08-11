@@ -1,4 +1,6 @@
-<li class="chat-item" data-id="{{id}}">
+<li class="chat-item{{#if isSelected}} chat-item_selected {{/if}}"
+  data-id="{{id}}"
+>
   <img src="/img/avatar.jpg" alt="avatar" class="chat-item__avatar" />
   <div class="chat-item__text-wrapper">
     <div class="chat-item__wrapper">

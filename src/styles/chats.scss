@@ -111,3 +111,19 @@
   font-size: 12px;
   line-height: 12px;
 }
+
+.chats__utils-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin: 0 0 10px;
+  align-items: baseline;
+}
+
+.chats__conversation {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}

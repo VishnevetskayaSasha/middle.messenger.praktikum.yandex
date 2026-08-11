@@ -1,2 +1,4 @@
-export { authController } from './AuthController';
-export { userController } from './UserController';
+export * from './AuthController';
+export * from './UserController';
+export * from './ChatsController';
+

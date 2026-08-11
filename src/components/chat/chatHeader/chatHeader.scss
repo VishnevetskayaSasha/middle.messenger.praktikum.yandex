@@ -1,0 +1,30 @@
+@use '../../../styles/variables' as *;
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 55px;
+  padding: 10px 10px 10px 25px;
+  border-bottom: 1px solid $color-line;
+  box-sizing: border-box;
+}
+
+.chat-header__info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-header__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: $font-weight-semibold;
+}

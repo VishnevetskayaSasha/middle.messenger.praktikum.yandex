@@ -1,16 +1,24 @@
 <main class="chats">
   <div class="chats__wrapper">
-    <div class="chats__profile-wrapper">
-      {{{ Link
-        modifier = "profile"
-        href = "/settings"
-        text = "Профиль"
+    <div class="chats__utils-wrapper">
+      {{{ Button
+        type = "button"
+        label = "+ Новый чат"
+        modifier = "create-chat"
+        ref = "createChatButton"
       }}}
-      <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.353554 8.35355L4.35355 4.35355L0.353554 0.353546" stroke="#999999"/>
-      </svg>
-    </div>
 
+      <div class="chats__profile-wrapper">
+        {{{ Link
+          modifier = "profile"
+          href = "/settings"
+          text = "Профиль"
+        }}}
+        <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.353554 8.35355L4.35355 4.35355L0.353554 0.353546" stroke="#999999"/>
+        </svg>
+      </div>
+    </div>
     <form class="search">
       <input
         type="search"
@@ -26,6 +34,9 @@
     </form>
 
     <aside class="sidebar">
+      {{{ FormError
+        text = formError
+      }}}
       <nav>
         <ul class="chat-list">
           {{#each chats}}
@@ -34,6 +45,8 @@
               name = name
               unreadCount = unreadCount
               lastMessage = lastMessage
+              isSelected = isSelected
+              onClick = onClick
             }}}
           {{/each}}
         </ul>
@@ -41,21 +54,39 @@
     </aside>
   </div>
   <div class="chats__content">
-     <div class="chats__empty-wrapper">
-        <p class="chats__empty">Выберите чат чтобы отправить сообщение</p>
-     </div>
+    {{#unless hasChats}}
+      <div class="chats__empty-wrapper">
+        <p class="chats__empty">
+          У вас пока нет чатов
+        </p>
+      </div>
+    {{/unless}}
 
-    <form class="chats__message" ref="messageForm">
-      {{{ Input
-        type="text"
-        name="message"
-        label="Сообщение..."
-      }}}
+    {{#if hasChats}}
+      {{#unless activeChatId}}
+        <div class="chats__empty-wrapper">
+          <p class="chats__empty">
+            Выберите чат, чтобы отправить сообщение
+          </p>
+        </div>
+      {{/unless}}
 
-      {{{ Button
-        type="submit"
-        label ="→"
-      }}}
-    </form>
+      {{#if activeChatId}}
+        <div class="chats__conversation">
+          {{{ ChatHeader
+            title = activeChatTitle
+            avatar = activeChatAvatar
+          }}}
+
+          {{{ ChatMessages
+            hasMessages = false
+          }}}
+
+          {{{ ChatFooter
+            onSend = onSendMessage
+          }}}
+      {{/if}}
+    {{/if}}
   </div>
+  <div class="chats__modal-root" ref="modalRoot"></div>
 </main>
