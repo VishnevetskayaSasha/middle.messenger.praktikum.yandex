@@ -7,6 +7,7 @@ interface InputProps extends BlockOwnProps {
   type: string;
   autocomplete?: string;
   modifier?: string;
+  value?: string;
 }
 
 export class Input extends Block<InputProps> {

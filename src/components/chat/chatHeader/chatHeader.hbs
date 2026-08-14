@@ -11,9 +11,35 @@
     </h2>
   </div>
 
-  {{{ Button
-    type = "button"
-    label = "⋮"
-    modifier = "chat-menu"
-  }}}
+  <div
+    class="chat-header__menu-wrapper"
+    ref="menuWrapper"
+  >
+    {{{ Button
+      type="button"
+      label="⋮"
+      modifier="chat-menu"
+      ref="menuButton"
+    }}}
+
+    {{#if isMenuOpen}}
+      <div class="chat-header__menu">
+        <button
+          class="chat-header__menu-item"
+          type="button"
+          ref="addUserButton"
+        >
+          Добавить пользователя
+        </button>
+
+        <button
+          class="chat-header__menu-item"
+          type="button"
+          ref="removeUserButton"
+        >
+          Удалить пользователя
+        </button>
+      </div>
+    {{/if}}
+  </div>
 </header>

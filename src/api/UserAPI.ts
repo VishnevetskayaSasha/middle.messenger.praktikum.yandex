@@ -16,6 +16,10 @@ export interface ChangePasswordData {
   newPassword: string;
 }
 
+export interface SearchUserData {
+  login: string;
+}
+
 export class UserAPI extends BaseAPI {
   public updateProfile(data: UpdateProfileData): Promise<User> {
     return this.http.put<User>(
@@ -34,6 +38,13 @@ export class UserAPI extends BaseAPI {
   public changeAvatar(data: FormData): Promise<User> {
     return this.http.put<User>(
       `${API_URL}/user/profile/avatar`,
+      { data },
+    );
+  }
+
+  public searchUsers(data: SearchUserData): Promise<User[]> {
+    return this.http.post<User[]>(
+      `${API_URL}/user/search`,
       { data },
     );
   }

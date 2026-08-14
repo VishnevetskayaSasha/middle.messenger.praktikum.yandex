@@ -19,10 +19,15 @@
 
 .button_modal-close {
   position: absolute;
-  top: 12px;
+  top: 16px;
   right: 16px;
-  width: auto;
   padding: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: $color-muted;
+  font-size: 18px;
 }
 
 .button_chat-menu {
@@ -59,4 +64,10 @@
     font-size: 18px;
     line-height: 1;
   }
+}
+
+.button_user-action{
+  width: auto;
+  padding: 8px 14px;
+  flex-shrink: 0;
 }

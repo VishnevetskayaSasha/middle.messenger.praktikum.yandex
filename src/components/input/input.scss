@@ -68,3 +68,11 @@
   }
 }
 
+.input_popup {
+  width: 100%;
+
+  & .input__label {
+    display: none;
+  }
+}
+

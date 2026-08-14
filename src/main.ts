@@ -2,6 +2,7 @@ import Handlebars from "handlebars";
 import { registerComponent } from './framework';
 import { router } from './router';
 import { userController } from './controllers';
+import { store } from './store';
 
 // components
 import { Button } from './components/button';
@@ -48,9 +49,19 @@ router
 
 async function startApp(): Promise<void> {
   try {
-    await userController.getUser();
+    const user = await userController.getUser();
+    store.setState({
+      user,
+    });
+
+    //console.log('Store user:', store.getState().user);
+
     router.start(true);
   } catch {
+    store.setState({
+      user: null,
+    });
+
     router.start(false);
   }
 }

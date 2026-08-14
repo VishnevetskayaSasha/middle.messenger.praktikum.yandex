@@ -4,6 +4,7 @@ import {
   type ChangePasswordData,
   type UpdateProfileData,
   type User,
+  type SearchUserData,
 } from '../api';
 
 class UserController {
@@ -24,6 +25,10 @@ class UserController {
 
   public async changeAvatar(data: FormData): Promise<User> {
     return this.userApi.changeAvatar(data);
+  }
+
+  public async searchUsers(data: SearchUserData): Promise<User[]> {
+    return this.userApi.searchUsers(data);
   }
 }
 

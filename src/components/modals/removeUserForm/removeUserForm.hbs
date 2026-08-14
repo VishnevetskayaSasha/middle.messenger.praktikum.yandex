@@ -1,0 +1,30 @@
+<div class="remove-user-form">
+  {{#if users.length}}
+    <div class="user-list">
+      {{#each users}}
+        <div class="user-list__item">
+          <div class="user-list__info">
+            <p class="user-list__login">
+              {{login}}
+            </p>
+
+            <p class="user-list__name">
+              {{first_name}} {{second_name}}
+            </p>
+          </div>
+
+          {{{ Button
+            type = "button"
+            label = "Удалить"
+            modifier = "user-action"
+            ref = buttonRef
+          }}}
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <p class="remove-user-form__empty">
+      В чате нет других пользователей
+    </p>
+  {{/if}}
+</div>

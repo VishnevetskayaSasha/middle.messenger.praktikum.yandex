@@ -1,4 +1,5 @@
 import { BaseAPI } from './BaseAPI';
+import type { User } from './AuthAPI';
 import { API_URL } from './constants';
 
 export interface LastMessage {
@@ -30,6 +31,16 @@ export interface ChatToken {
   token: string;
 }
 
+export interface AddUsersToChatData {
+  users: number[];
+  chatId: number;
+}
+
+export interface RemoveUsersFromChatData {
+  users: number[];
+  chatId: number;
+}
+
 export class ChatsAPI extends BaseAPI {
   public getChats(): Promise<Chat[]> {
     return this.http.get<Chat[]>(
@@ -47,6 +58,26 @@ export class ChatsAPI extends BaseAPI {
   public getChatToken(chatId: number): Promise<ChatToken> {
     return this.http.post<ChatToken>(
       `${API_URL}/chats/token/${chatId}`,
+    );
+  }
+
+  public addUsers(data: AddUsersToChatData): Promise<void> {
+    return this.http.put<void>(
+      `${API_URL}/chats/users`,
+      { data },
+    );
+  }
+
+  public getChatUsers(chatId: number): Promise<User[]> {
+    return this.http.get<User[]>(
+      `${API_URL}/chats/${chatId}/users`,
+    );
+  }
+  
+  public removeUsers(data: RemoveUsersFromChatData): Promise<void> {
+    return this.http.delete<void>(
+      `${API_URL}/chats/users`,
+      { data },
     );
   }
 }
