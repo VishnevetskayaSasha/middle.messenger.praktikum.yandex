@@ -1,9 +1,11 @@
 import { Block, HTTPError, type BlockOwnProps } from '../../framework';
-import template from './chats.hbs?raw';
 import { chatsController } from '../../controllers';
 import { CreateChatForm, Modal, AddUserForm, RemoveUserForm } from '../../components/modals';
 import { store } from '../../store';
-import { ChatWebSocket } from '../../services';
+import { ChatWebSocket, type ChatMessage } from '../../services';
+import { formatMessageTime } from '../../utils/formatMessageTime';
+
+import template from './chats.hbs?raw';
 
 interface ChatView {
   id: number;
@@ -11,9 +13,9 @@ interface ChatView {
   avatar: string | null;
   unreadCount: number;
   lastMessage: {
-    author: string;
     text: string;
     time: string;
+    isOwn: boolean;
   } | null;
   isSelected: boolean;
   onClick: (id: number) => void;
@@ -27,9 +29,19 @@ interface ChatsPageProps extends BlockOwnProps {
   activeChatId: number | null;
   activeChatTitle: string;
   activeChatAvatar: string | null;
+  messages: ChatMessage[];
+  messageViews: {
+    id: number;
+    content: string;
+    time: string;
+    isOwn: boolean;
+  }[];
+  hasMessages: boolean;
   onSendMessage?: (message: string) => void;
   onAddUser?: () => void;
   onRemoveUser?: () => void;
+  onCreateChat?: () => void;
+  onSelectChat?: (chatId: number) => void
 }
 
 export class ChatsPage extends Block<ChatsPageProps> {
@@ -49,13 +61,22 @@ export class ChatsPage extends Block<ChatsPageProps> {
       activeChatId: null,
       activeChatTitle: '',
       activeChatAvatar: null,
+      messages: [],
+      messageViews: [],
+      hasMessages: false,
     });
 
     this.setProps({
       onSendMessage: this.handleSendMessage,
       onAddUser: this.openAddUserModal,
       onRemoveUser: this.handleRemoveUser,
+      onCreateChat: this.openCreateChatModal,
+      onSelectChat: this.selectChat,
     });
+
+    this.chatWebSocket.setOnMessage(
+      this.handleWebSocketMessages,
+    );
   }
 
   protected componentDidMount(): void {
@@ -78,8 +99,6 @@ export class ChatsPage extends Block<ChatsPageProps> {
 
     this.removeUserModal?.close();
     this.removeUserModal = null;
-    
-    this.chatWebSocket.disconnect();
   }
 
   private initCreateChatButton(): void {
@@ -124,6 +143,7 @@ export class ChatsPage extends Block<ChatsPageProps> {
   private async loadChats(): Promise<void> {
     try {
       const chats = await chatsController.getChats();
+      const currentUserLogin = store.getState().user?.login;
 
       const chatViews: ChatView[] = chats.map(
         (chat) => ({
@@ -133,15 +153,12 @@ export class ChatsPage extends Block<ChatsPageProps> {
           unreadCount: chat.unread_count,
           lastMessage:chat.last_message
             ? {
-                author:
-                  chat.last_message.user.login,
                 text: chat.last_message.content,
-                time: chat.last_message.time,
+                time: formatMessageTime(chat.last_message.time),
+                isOwn: chat.last_message.user.login === currentUserLogin,
               }
             : null,
-          isSelected:
-          chat.id === this.props.activeChatId,
-
+          isSelected: chat.id === this.props.activeChatId,
         onClick: this.selectChat,
         }),
       );
@@ -190,14 +207,26 @@ export class ChatsPage extends Block<ChatsPageProps> {
       activeChatId: chatId,
       activeChatTitle: selectedChat.name,
       activeChatAvatar: selectedChat.avatar,
+      messages: [],
     });
+
+    this.clearUnreadCount(chatId);
   };
 
-  private handleSendMessage = (message: string): void => {
-    console.log({
-      chatId: this.props.activeChatId,
-      message,
+  private clearUnreadCount(chatId: number): void {
+    const chats = this.props.chats.map((chat) => ({
+      ...chat,
+      unreadCount: chat.id === chatId ? 0 : chat.unreadCount,
+    }));
+
+    this.setProps({
+      chats,
     });
+  }
+
+  private handleSendMessage = (message: string): void => {
+    console.log('handleSendMessage:', message);
+    this.chatWebSocket.sendMessage(message);
   };
 
   private async loadChatToken(chatId: number): Promise<void> {
@@ -360,4 +389,28 @@ export class ChatsPage extends Block<ChatsPageProps> {
       );
     }
   };
+
+  private handleWebSocketMessages = (messages: ChatMessage[], isHistory: boolean): void => {
+    const nextMessages = isHistory ? [...messages].reverse() : [
+          ...this.props.messages,
+          ...messages,
+        ];
+
+    this.setProps({
+      messages: nextMessages,
+      messageViews: this.createMessageViews(nextMessages),
+      hasMessages: nextMessages.length > 0,
+    });
+  };
+
+  private createMessageViews(messages: ChatMessage[]) {
+    const currentUserId = store.getState().user?.id;
+
+    return messages.map((message) => ({
+      id: message.id,
+      content: message.content,
+      time: formatMessageTime(message.time),
+      isOwn: message.user_id === currentUserId,
+    }));
+  }
 }

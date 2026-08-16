@@ -1,7 +1,15 @@
 <div class="chat-messages">
-  {{#unless hasMessages}}
+  {{#if hasMessages}}
+    {{#each messages}}
+      {{{ ChatMessage
+        content = content
+        time = time
+        isOwn = isOwn
+      }}}
+    {{/each}}
+  {{else}}
     <p class="chat-messages__empty">
       В этом чате пока нет сообщений
     </p>
-  {{/unless}}
+  {{/if}}
 </div>

@@ -1,4 +1,4 @@
-import {Block, HTTPError, type BlockOwnProps} from '../../../framework';
+import {Block, type BlockOwnProps} from '../../../framework';
 
 import template from './addUserForm.hbs?raw';
 import { userController } from '../../../controllers';

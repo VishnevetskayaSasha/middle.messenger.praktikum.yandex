@@ -1,58 +1,10 @@
 <main class="chats">
-  <div class="chats__wrapper">
-    <div class="chats__utils-wrapper">
-      {{{ Button
-        type = "button"
-        label = "+ Новый чат"
-        modifier = "create-chat"
-        ref = "createChatButton"
-      }}}
+  {{{ ChatSidebar
+    activeChatId = activeChatId
+    onCreateChat = onCreateChat
+    onSelectChat = onSelectChat
+  }}}
 
-      <div class="chats__profile-wrapper">
-        {{{ Link
-          modifier = "profile"
-          href = "/settings"
-          text = "Профиль"
-        }}}
-        <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0.353554 8.35355L4.35355 4.35355L0.353554 0.353546" stroke="#999999"/>
-        </svg>
-      </div>
-    </div>
-    <form class="search">
-      <input
-        type="search"
-        name="search"
-        class="search__input"
-        placeholder="Поиск"
-      >
-      <img
-        class="search__ico"
-        src="/img/magnifier.svg"
-        alt="Поиск"
-      >
-    </form>
-
-    <aside class="sidebar">
-      {{{ FormError
-        text = formError
-      }}}
-      <nav>
-        <ul class="chat-list">
-          {{#each chats}}
-            {{{ ChatItem
-              id = id
-              name = name
-              unreadCount = unreadCount
-              lastMessage = lastMessage
-              isSelected = isSelected
-              onClick = onClick
-            }}}
-          {{/each}}
-        </ul>
-      </nav>
-    </aside>
-  </div>
   <div class="chats__content">
     {{#unless hasChats}}
       <div class="chats__empty-wrapper">
@@ -81,7 +33,8 @@
           }}}
 
           {{{ ChatMessages
-            hasMessages = false
+            messages = messageViews
+            hasMessages = messageViews.length
           }}}
 
           {{{ ChatFooter

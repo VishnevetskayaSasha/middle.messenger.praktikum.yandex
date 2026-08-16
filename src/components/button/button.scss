@@ -37,16 +37,6 @@
   color: $color-text;
 }
 
-.button_attach {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: $color-muted;
-}
-
 .button_send-message {
   position: relative;
   flex-shrink: 0;

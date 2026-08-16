@@ -1,10 +1,11 @@
 import { Block, type BlockOwnProps } from '../../framework';
+
 import template from './chatItem.hbs?raw';
 
 export interface ChatItemLastMessage {
-  author: string;
   text: string;
   time: string;
+  isOwn: boolean;
 }
 
 interface ChatItemProps extends BlockOwnProps {

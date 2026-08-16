@@ -16,11 +16,12 @@
     <div class="chat-item__wrapper">
       {{#with lastMessage}}
         <div class="chat-item__message">
-          {{#if (eq author "User")}}
-            <span class="chat-item__message-user">Вы:</span> {{text}}
-          {{else}}
-            {{text}}
+          {{#if isOwn}}
+            <span class="chat-item__message-user">
+              Вы:
+            </span>
           {{/if}}
+          {{text}}
         </div>
       {{/with}}
       {{#if unreadCount}}

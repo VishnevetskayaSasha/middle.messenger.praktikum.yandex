@@ -7,6 +7,7 @@
   padding: 20px;
   overflow-y: auto;
   box-sizing: border-box;
+  min-height: 0;
 }
 
 .chat-messages__empty {

@@ -12,7 +12,7 @@ import { Heading } from './components/heading';
 import { ChatItem } from './components/chatItem';
 import { ProfileField } from './components/profileField';
 import { FormError } from './components/formError';
-import { ChatHeader, ChatFooter, ChatMessages } from './components/chat';
+import { ChatHeader, ChatFooter, ChatMessages, ChatMessage, ChatSidebar } from './components/chat';
 
 // pages
 import { LoginPage } from './pages/login';
@@ -36,6 +36,8 @@ registerComponent(FormError);
 registerComponent(ChatHeader);
 registerComponent(ChatMessages);
 registerComponent(ChatFooter);
+registerComponent(ChatMessage);
+registerComponent(ChatSidebar);
 
 Handlebars.registerHelper("eq", eq);
 

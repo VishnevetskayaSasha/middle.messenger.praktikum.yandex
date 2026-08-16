@@ -1,12 +1,13 @@
 import { Block, HTTPError, type BlockOwnProps } from '../../framework';
-import template from './profile.hbs?raw';
 import { showInputError, validateInput } from '../../utils/formValidation';
 import { validatePasswordConfirmation } from '../../utils/validation';
-
+import { store } from '../../store';
 import { authController, userController  } from '../../controllers';
 import type { UpdateProfileData, ChangePasswordData, User } from '../../api';
 import { router } from '../../router';
 import { getApiErrorReason } from '../../utils/getApiErrorReason';
+
+import template from './profile.hbs?raw';
 
 type ProfileMode = 'view' | 'edit-data' | 'edit-password';
 
@@ -25,19 +26,21 @@ export class ProfilePage extends Block<ProfilePageProps> {
   protected template = template;
 
   constructor() {
+    const user = store.getState().user ?? {
+      id: 0,
+      email: '',
+      login: '',
+      first_name: '',
+      second_name: '',
+      display_name: null,
+      phone: '',
+      avatar: null,
+    };
+
     super({
       mode: 'view',
-      user: {
-        id: 0,
-        email: '',
-        login: '',
-        first_name: '',
-        second_name: '',
-        display_name: null,
-        phone: '',
-        avatar: null,
-      },
-      userDisplayName: '',
+      user,
+      userDisplayName: user.display_name ?? user.first_name,
       profileFormError: '',
       passwordFormError: '',
       isViewMode: true,
@@ -65,10 +68,6 @@ export class ProfilePage extends Block<ProfilePageProps> {
     this.initDataForm();
     this.initPasswordForm();
     this.initLogout();
-
-    if (this.props.user.id === 0) {
-      void this.loadUser();
-    }
   }
 
   private initEditDataMode() {
@@ -113,9 +112,11 @@ export class ProfilePage extends Block<ProfilePageProps> {
       const formData = new FormData(dataForm);
       const data = Object.fromEntries(formData.entries()) as unknown as UpdateProfileData;
 
-
       try {
         const user = await userController.updateProfile(data);
+        store.setState({
+          user,
+        });
         this.setMode('view', user);
       } catch (error: unknown) {
         if (error instanceof HTTPError) {
@@ -196,9 +197,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
         return;
       }
 
-      const oldPassword = passwordForm.elements.namedItem(
-        'old_password',
-      ) as HTMLInputElement;
+      const oldPassword = passwordForm.elements.namedItem('old_password') as HTMLInputElement;
 
       const data: ChangePasswordData = {
         oldPassword: oldPassword.value,
@@ -246,6 +245,9 @@ export class ProfilePage extends Block<ProfilePageProps> {
 
       try {
         await authController.logout();
+        store.setState({
+          user: null,
+        });
         router.setAuthorized(false);
         router.go('/');
       } catch (error: unknown) {
@@ -264,17 +266,5 @@ export class ProfilePage extends Block<ProfilePageProps> {
         );
       }
     });
-  }
-
-  private async loadUser(): Promise<void> {
-    try {
-      const user = await userController.getUser();
-      this.setProps({user, userDisplayName: user.display_name ?? user.first_name,});
-    } catch (error: unknown) {
-      console.error(
-        'Не удалось загрузить данные пользователя',
-        error,
-      );
-    }
   }
 }

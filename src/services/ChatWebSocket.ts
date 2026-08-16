@@ -1,7 +1,21 @@
 import { WS_URL } from '../api/constants';
 
+export interface ChatMessage {
+  id: number;
+  user_id: number;
+  time: string;
+  type: 'message';
+  content: string;
+}
+
+interface WebSocketServiceMessage {
+  type: 'pong';
+}
+
 export class ChatWebSocket {
   private socket: WebSocket | null = null;
+  private pingInterval: ReturnType<typeof setInterval> | null = null;
+  private onMessage: | ((messages: ChatMessage[], isHistory: boolean) => void) | null = null;
 
   public connect(
     userId: number,
@@ -17,6 +31,12 @@ export class ChatWebSocket {
   }
 
   public disconnect(): void {
+
+    if (this.pingInterval) {
+      clearInterval(this.pingInterval);
+      this.pingInterval = null;
+    }
+
     if (!this.socket) {
       return;
     }
@@ -30,6 +50,26 @@ export class ChatWebSocket {
     this.socket = null;
   }
 
+  public sendMessage(message: string): void {
+
+    console.log(
+    'sendMessage:',
+    message,
+    this.socket?.readyState,
+  );
+
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      return;
+    }
+
+    this.socket.send(
+      JSON.stringify({
+        content: message,
+        type: 'message',
+      }),
+    );
+  }
+
   private handleOpen = (): void => {
     console.log('WebSocket connected');
 
@@ -39,11 +79,42 @@ export class ChatWebSocket {
         type: 'get old',
       }),
     );
+
+    if (this.pingInterval) {
+      clearInterval(this.pingInterval);
+    }
+
+    this.pingInterval = setInterval(() => {
+      if ( this.socket?.readyState === WebSocket.OPEN) {
+        this.socket.send(
+          JSON.stringify({
+            type: 'ping',
+          }),
+        );
+      }
+    }, 5000);
   };
 
   private handleMessage = (event: MessageEvent): void => {
-    const data = JSON.parse(event.data);
+    const data:
+      | ChatMessage
+      | ChatMessage[]
+      | WebSocketServiceMessage = JSON.parse(event.data);
+
     console.log('WebSocket message:', data);
+
+    if (Array.isArray(data)) {
+      this.onMessage?.(data, true);
+      return;
+    }
+
+    if (data.type === 'pong') {
+      return;
+    }
+
+    if (data.type === 'message') {
+      this.onMessage?.([data], false);
+    }
   };
 
   private handleError = (event: Event): void => {
@@ -55,6 +126,15 @@ export class ChatWebSocket {
 
   private handleClose = (): void => {
     console.log('WebSocket closed');
+
+     if (this.pingInterval) {
+      clearInterval(this.pingInterval);
+      this.pingInterval = null;
+    }
   };
+
+  public setOnMessage( callback: (messages: ChatMessage[],  isHistory: boolean) => void): void {
+    this.onMessage = callback;
+  }
 }
 
