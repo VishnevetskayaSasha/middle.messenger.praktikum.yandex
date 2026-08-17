@@ -1,0 +1,18 @@
+<div class="delete-chat-form">
+  <p class="delete-chat-form__text">
+    Вы уверены, что хотите удалить чат?
+  </p>
+
+  {{#if error}}
+    <p class="delete-chat-form__text">
+      {{error}}
+    </p>
+  {{/if}}
+
+  {{{ Button
+    type = "button"
+    label = "Удалить"
+    modifier = "user-action"
+    ref = "deleteButton"
+  }}}
+</div>

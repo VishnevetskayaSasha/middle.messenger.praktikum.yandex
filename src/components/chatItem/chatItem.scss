@@ -20,6 +20,10 @@
   }
 }
 
+.chat-item_selected {
+  background-color: $color-chat-hover;
+}
+
 .chat-item__avatar {
   width: 47px;
   height: 47px;
@@ -41,6 +45,10 @@
   line-height: 13px;
   font-weight: $font-weight-semibold;
   margin: 0;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chat-item__message {
@@ -57,11 +65,6 @@
 
 .chat-item__message-user {
   color: $color-text;
-}
-
-.chat-item__utils-wrapper {
-  display: flex;
-  justify-content: space-between;
 }
 
 .chat-item__date {

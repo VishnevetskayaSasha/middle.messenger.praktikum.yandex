@@ -1,5 +1,8 @@
 import Handlebars from "handlebars";
-import { Block, registerComponent } from './framework';
+import { registerComponent } from './framework';
+import { router } from './router';
+import { userController } from './controllers';
+import { store } from './store';
 
 // components
 import { Button } from './components/button';
@@ -8,6 +11,8 @@ import { Link } from './components/link';
 import { Heading } from './components/heading';
 import { ChatItem } from './components/chatItem';
 import { ProfileField } from './components/profileField';
+import { FormError } from './components/formError';
+import { ChatHeader, ChatFooter, ChatMessages, ChatMessage, ChatSidebar } from './components/chat';
 
 // pages
 import { LoginPage } from './pages/login';
@@ -27,53 +32,40 @@ registerComponent(Link);
 registerComponent(Heading);
 registerComponent(ChatItem);
 registerComponent(ProfileField);
+registerComponent(FormError);
+registerComponent(ChatHeader);
+registerComponent(ChatMessages);
+registerComponent(ChatFooter);
+registerComponent(ChatMessage);
+registerComponent(ChatSidebar);
 
 Handlebars.registerHelper("eq", eq);
 
-function renderPage(page: Block) {
-  const app = document.querySelector('#app');
+router
+  .use('/', LoginPage)
+  .use('/sign-up', RegistrationPage)
+  .use('/settings', ProfilePage)
+  .use('/messenger', ChatsPage)
+  .use('/404', Error404Page)
+  .use('/500', Error500Page);
 
-  if (!app) {
-    throw new Error('App container not found');
-  }
+async function startApp(): Promise<void> {
+  try {
+    const user = await userController.getUser();
+    store.setState({
+      user,
+    });
 
-  app.innerHTML = '';
-  app.append(page.element()!);
-}
+    //console.log('Store user:', store.getState().user);
 
-function render() {
-  const route = window.location.hash;
+    router.start(true);
+  } catch {
+    store.setState({
+      user: null,
+    });
 
-  switch (route) {
-    case '':
-      renderPage(new LoginPage());
-      break;
-
-    case '#register':
-      renderPage(new RegistrationPage());
-      break;
-
-    case '#404':
-      renderPage(new Error404Page());
-      break;
-
-    case '#500':
-      renderPage(new Error500Page());
-      break;
-
-    case '#chats':
-      renderPage(new ChatsPage());
-      break;
-
-    case '#profile':
-      renderPage(new ProfilePage());
-      break;
-
-    default:
-      renderPage(new Error404Page());
-      break;
+    router.start(false);
   }
 }
 
-window.addEventListener('hashchange', render);
-render();
+startApp();

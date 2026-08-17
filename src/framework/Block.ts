@@ -14,24 +14,23 @@ export type EventListType = Partial<
 
 export abstract class Block<Props extends BlockOwnProps = BlockOwnProps> {
   protected abstract template: string;
-
   protected props = {} as Props;
-
   private domElement: Element | null = null;
-
   protected children: Block<object>[] = [];
-
   protected refs: Record<string, Element> = {};
-
   protected events: EventListType = {};
 
   constructor(props: Props = {} as Props) {
     this.props = props;
   }
 
-  public element(): Element | null {
+  public element(): Element {
     if (!this.domElement) {
       this.render();
+    }
+
+    if (!this.domElement) {
+      throw new Error('Component element is not created');
     }
 
     return this.domElement;
@@ -88,7 +87,6 @@ export abstract class Block<Props extends BlockOwnProps = BlockOwnProps> {
 
   protected render() {
     this.unmountComponent();
-
     const fragment = this.compile();
 
     if (this.domElement && fragment) {
@@ -96,21 +94,17 @@ export abstract class Block<Props extends BlockOwnProps = BlockOwnProps> {
     }
 
     this.domElement = fragment;
-
     this.mountComponent();
   }
 
   private compile(): Element | null {
     const html = Handlebars.compile(this.template)(this.props);
     const templateElement = document.createElement('template');
-
     templateElement.innerHTML = html;
-
     const fragment = templateElement.content;
 
     if (this.props.__children) {
       this.children = this.props.__children.map((child) => child.component);
-
       this.props.__children.forEach((child) => {
         child.embed(fragment);
       });

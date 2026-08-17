@@ -7,6 +7,7 @@ interface ProfileFieldProps extends BlockOwnProps {
   type: string;
   value: string;
   isEditable?: boolean;
+  autocomplete?: string;
 }
 
 export class ProfileField extends Block<ProfileFieldProps> {

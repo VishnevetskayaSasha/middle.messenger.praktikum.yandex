@@ -1,3 +1,7 @@
-<button class="button {{#if modifier}} button_{{modifier}}{{/if}}" type="{{type}}">
+<button
+  class="button {{#if modifier}} button_{{modifier}}{{/if}}"
+  type="{{type}}"
+  {{#if ref}}ref="{{ref}}"{{/if}}
+>
   {{label}}
 </button>

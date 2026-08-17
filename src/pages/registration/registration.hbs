@@ -5,58 +5,70 @@
      }}}
 
     <form action="" method="post" class="auth__form">
-      {{{ Input 
+      {{{ Input
         label = "Почта"
         type = "text"
         name = "email"
+        autocomplete = "email"
       }}}
 
-      {{{ Input 
+      {{{ Input
         label = "Логин"
         type = "text"
         name = "login"
+        autocomplete = "username"
       }}}
 
-      {{{ Input 
+      {{{ Input
         label = "Имя"
         type = "text"
         name = "first_name"
+        autocomplete = "name"
       }}}
 
-      {{{ Input 
+      {{{ Input
         label = "Фамилия"
         type = "text"
         name = "second_name"
+        autocomplete = "second-name"
       }}}
 
-      {{{ Input 
+      {{{ Input
         label = "Телефон"
         type = "tel"
         name = "phone"
+        autocomplete = "tel"
       }}}
 
-      {{{ Input 
+      {{{ Input
         label = "Пароль"
         type = "password"
         name = "password"
+        autocomplete = "password"
       }}}
 
-      {{{ Input 
+      {{{ Input
         label = "Пароль (ещё раз)"
         type = "password"
         name = "confirm_password"
+        autocomplete = "password"
       }}}
+
       <div class="auth__button-wrapper auth__button-wrapper_registration">
         {{{ Button
           label = "Зарегистрироваться"
           modifier = "registration"
           type = "submit"
-        }}}        
+        }}}
+
+        {{{ FormError
+          text = formError
+        }}}
       </div>
 
       {{{ Link
         modifier = "default"
-        href = "#chats"
+        href = "/messenger"
         text = "Войти"
       }}}
     </form>

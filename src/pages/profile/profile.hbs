@@ -1,7 +1,7 @@
 <main class="profile">
   <aside class="profile__sidebar">
     <a
-      href="#chats"
+      href="/messenger"
       class="profile__back"
       aria-label="Назад к чатам"
     >
@@ -10,20 +10,33 @@
 
   <section class="profile__content">
     <div class="profile__header">
-      <div class="profile__avatar-wrapper">
+      <label class="profile__avatar-wrapper">
         <img
-          src="img/avatar.jpg"
+          src="{{avatarUrl}}"
           alt="avatar"
           class="profile__avatar"
         />
-
         <span class="profile__avatar-overlay">
           Поменять<br>
           аватар
         </span>
-      </div>
+        <input
+          class="profile__avatar-input"
+          type="file"
+          name="avatar"
+          accept="image/*"
+          ref="avatarInput"
+        />
+      </label>
+
+      {{#if avatarError}}
+        <p class="profile__avatar-error">
+          {{avatarError}}
+        </p>
+      {{/if}}
+      
       {{{ Heading
-        text = "Иван"
+        text = user.first_name
         modifier = "profile"
       }}}
     </div>
@@ -37,6 +50,7 @@
             type = "email"
             value = user.email
             isEditable = isEditDataMode
+            autocomplete = "email"
           }}}
 
           {{{ ProfileField
@@ -45,6 +59,7 @@
             type = "text"
             value = user.login
             isEditable = isEditDataMode
+            autocomplete = "username"
           }}}
 
           {{{ ProfileField
@@ -53,6 +68,7 @@
             type = "text"
             value = user.first_name
             isEditable = isEditDataMode
+            autocomplete = "name"
           }}}
 
           {{{ ProfileField
@@ -61,14 +77,16 @@
             type = "text"
             value = user.second_name
             isEditable = isEditDataMode
+            autocomplete = "family"
           }}}
 
           {{{ ProfileField
             label = "Имя в чате"
             name = "display_name"
             type = "text"
-            value = user.display_name
+            value = userDisplayName
             isEditable = isEditDataMode
+            autocomplete = "nickname"
           }}}
 
           {{{ ProfileField
@@ -77,13 +95,19 @@
             type = "tel"
             value = user.phone
             isEditable = isEditDataMode
+            autocomplete="tel"
           }}}
+
         </div>
         {{#if isEditDataMode}}
           <div class="profile__button-wrapper">
             {{{ Button
               type="submit"
               label="Сохранить"
+            }}}
+
+            {{{ FormError
+              text = profileFormError
             }}}
           </div>
         {{/if}}
@@ -95,24 +119,27 @@
           label = "Старый пароль"
           type = "password"
           name = "old_password"
-          value = "••••••••"
+          value = ""
           isEditable = true
+          autocomplete = "current-password"
         }}}
 
         {{{ ProfileField
           label = "Новый пароль"
           type = "password"
           name = "new_password"
-          value = "-"
+          value = ""
           isEditable = true
+          autocomplete = "new-password"
         }}}
 
         {{{ ProfileField
           label = "Повторите новый пароль"
           type = "password"
           name = "repeat_password"
-          value = "-"
+          value = ""
           isEditable = true
+          autocomplete = "new-password"
         }}}
 
         <div class="profile__button-wrapper">
@@ -120,15 +147,19 @@
             type="submit"
             label="Сохранить"
           }}}
+
+          {{{ FormError
+            text = passwordFormError
+          }}}
         </div>
       </form>
-    {{/if}}  
+    {{/if}}
 
     {{#if isViewMode}}
       <nav class="profile__actions">
         {{{ Link
           modifier = "action"
-          href = "#profile"
+          href = "/settings"
           text = "Изменить данные"
           ref="editDataLink"
           dataAction="edit-data"
@@ -136,7 +167,7 @@
 
         {{{ Link
           modifier = "action"
-          href = "#profile"
+          href = "/settings"
           text = "Изменить пароль"
           ref="editPasswordLink"
           dataAction="edit-password"
@@ -144,8 +175,9 @@
 
         {{{ Link
           modifier = "logout"
-          href = "#"
+          href = "/"
           text = "Выйти"
+          ref = "logoutLink"
         }}}
       </nav>
     {{/if}}

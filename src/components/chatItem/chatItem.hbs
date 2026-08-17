@@ -1,4 +1,6 @@
-<li class="chat-item" data-id="{{id}}">
+<li class="chat-item{{#if isSelected}} chat-item_selected {{/if}}"
+  data-id="{{id}}"
+>
   <img src="/img/avatar.jpg" alt="avatar" class="chat-item__avatar" />
   <div class="chat-item__text-wrapper">
     <div class="chat-item__wrapper">
@@ -14,11 +16,12 @@
     <div class="chat-item__wrapper">
       {{#with lastMessage}}
         <div class="chat-item__message">
-          {{#if (eq author "User")}}
-            <span class="chat-item__message-user">Вы:</span> {{text}}
-          {{else}}
-            {{text}}
+          {{#if isOwn}}
+            <span class="chat-item__message-user">
+              Вы:
+            </span>
           {{/if}}
+          {{text}}
         </div>
       {{/with}}
       {{#if unreadCount}}
