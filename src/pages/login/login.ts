@@ -2,7 +2,7 @@ import { Block, HTTPError, type BlockOwnProps } from '../../framework';
 import { authController } from '../../controllers';
 import type { SignInData } from '../../api';
 import { router } from '../../router';
-
+import { store } from '../../store';
 import template from './login.hbs?raw';
 import { validateInput } from '../../utils/formValidation';
 import { getApiErrorReason } from '../../utils/getApiErrorReason';
@@ -46,7 +46,11 @@ export class LoginPage extends Block<LoginPageProps> {
       const data = Object.fromEntries(formData.entries()) as unknown as SignInData;
 
       try {
-        await authController.signIn(data);
+        const user = await authController.signIn(data);
+
+        store.setState({
+          user,
+        });
         router.setAuthorized(true);
         router.go('/messenger');
       } catch (error: unknown) {
@@ -64,7 +68,7 @@ export class LoginPage extends Block<LoginPageProps> {
       }
     });
   }
-  
+
   private getAuthErrorMessage(error: HTTPError): string {
     const reason = getApiErrorReason(error);
 

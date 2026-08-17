@@ -41,10 +41,15 @@ export interface RemoveUsersFromChatData {
   chatId: number;
 }
 
+export interface DeleteChatData {
+  chatId: number;
+}
+
 export class ChatsAPI extends BaseAPI {
   public getChats(): Promise<Chat[]> {
     return this.http.get<Chat[]>(
       `${API_URL}/chats`,
+      { cacheBust: true, }
     );
   }
 
@@ -73,10 +78,17 @@ export class ChatsAPI extends BaseAPI {
       `${API_URL}/chats/${chatId}/users`,
     );
   }
-  
+
   public removeUsers(data: RemoveUsersFromChatData): Promise<void> {
     return this.http.delete<void>(
       `${API_URL}/chats/users`,
+      { data },
+    );
+  }
+
+  public deleteChat(data: DeleteChatData): Promise<void> {
+    return this.http.delete<void>(
+      `${API_URL}/chats`,
       { data },
     );
   }

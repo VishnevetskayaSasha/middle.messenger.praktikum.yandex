@@ -3,45 +3,40 @@
     activeChatId = activeChatId
     onCreateChat = onCreateChat
     onSelectChat = onSelectChat
+    onActiveChatDeleted = onActiveChatDeleted
   }}}
 
   <div class="chats__content">
-    {{#unless hasChats}}
+    {{#if activeChatId}}
+      <div class="chats__conversation">
+        {{{ ChatHeader
+          title = activeChatTitle
+          avatar = activeChatAvatar
+          onAddUser = onAddUser
+          onRemoveUser = onRemoveUser
+          onDeleteChat = onDeleteChat
+        }}}
+
+        {{{ ChatMessages
+          messages = messageViews
+          hasMessages = hasMessages
+        }}}
+
+        {{{ ChatFooter
+          onSend = onSendMessage
+        }}}
+      </div>
+    {{else}}
       <div class="chats__empty-wrapper">
         <p class="chats__empty">
-          У вас пока нет чатов
+          Выберите чат или создайте новый
         </p>
       </div>
-    {{/unless}}
-
-    {{#if hasChats}}
-      {{#unless activeChatId}}
-        <div class="chats__empty-wrapper">
-          <p class="chats__empty">
-            Выберите чат, чтобы отправить сообщение
-          </p>
-        </div>
-      {{/unless}}
-
-      {{#if activeChatId}}
-        <div class="chats__conversation">
-          {{{ ChatHeader
-            title = activeChatTitle
-            avatar = activeChatAvatar
-            onAddUser = onAddUser
-            onRemoveUser = onRemoveUser
-          }}}
-
-          {{{ ChatMessages
-            messages = messageViews
-            hasMessages = messageViews.length
-          }}}
-
-          {{{ ChatFooter
-            onSend = onSendMessage
-          }}}
-      {{/if}}
     {{/if}}
   </div>
-  <div class="chats__modal-root" ref="modalRoot"></div>
+
+  <div
+    class="chats__modal-root"
+    ref="modalRoot"
+  ></div>
 </main>

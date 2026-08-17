@@ -9,6 +9,7 @@ interface ChatHeaderProps extends BlockOwnProps {
   isMenuOpen: boolean;
   onAddUser: () => void;
   onRemoveUser: () => void;
+  onDeleteChat: () => void;
 }
 
 type ChatHeaderConstructorProps = Omit<ChatHeaderProps, 'isMenuOpen'>;
@@ -29,22 +30,26 @@ export class ChatHeader extends Block<ChatHeaderProps> {
     const menuButton = this.refs.menuButton as | HTMLButtonElement | undefined;
     const addUserButton = this.refs.addUserButton as | HTMLButtonElement | undefined;
     const removeUserButton = this.refs.removeUserButton as | HTMLButtonElement | undefined;
+    const deleteChatButton = this.refs.deleteChatButton as | HTMLButtonElement | undefined;
 
     menuButton?.addEventListener('click', this.toggleMenu);
     addUserButton?.addEventListener('click', this.handleAddUser);
     removeUserButton?.addEventListener('click', this.handleRemoveUser);
     document.addEventListener('click', this.handleDocumentClick);
+    deleteChatButton?.addEventListener('click', this.handleDeleteChat);
   }
 
   protected componentWillUnmount(): void {
     const menuButton = this.refs.menuButton as | HTMLButtonElement | undefined;
     const addUserButton = this.refs.addUserButton as | HTMLButtonElement | undefined;
     const removeUserButton = this.refs.removeUserButton as | HTMLButtonElement | undefined;
+    const deleteChatButton = this.refs.deleteChatButton as | HTMLButtonElement | undefined;
 
     menuButton?.removeEventListener('click', this.toggleMenu);
     addUserButton?.removeEventListener('click', this.handleAddUser);
     removeUserButton?.removeEventListener('click', this.handleRemoveUser);
     document.removeEventListener('click', this.handleDocumentClick);
+    deleteChatButton?.removeEventListener('click', this.handleDeleteChat);
   }
 
   private toggleMenu = (event: MouseEvent): void => {
@@ -86,5 +91,13 @@ export class ChatHeader extends Block<ChatHeaderProps> {
     this.setProps({
       isMenuOpen: false,
     });
+  };
+
+  private handleDeleteChat = (): void => {
+    this.setProps({
+      isMenuOpen: false,
+    });
+
+    this.props.onDeleteChat();
   };
 }

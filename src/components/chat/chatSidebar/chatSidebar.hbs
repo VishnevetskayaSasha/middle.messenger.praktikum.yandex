@@ -18,12 +18,14 @@
         </svg>
       </div>
     </div>
-    <form class="search">
+    <form class="search" onsubmit="return false">
       <input
         type="search"
         name="search"
         class="search__input"
         placeholder="Поиск"
+        value="{{searchValue}}"
+        ref="searchInput"
       >
       <img
         class="search__ico"
@@ -37,18 +39,28 @@
         text = formError
       }}}
       <nav>
-        <ul class="chat-list">
-          {{#each chats}}
-            {{{ ChatItem
-              id = id
-              name = name
-              unreadCount = unreadCount
-              lastMessage = lastMessage
-              isSelected = isSelected
-              onClick = onClick
-            }}}
-          {{/each}}
-        </ul>
+        {{#if hasSearchResults}}
+          <ul class="chat-list">
+            {{#each chats}}
+              {{{ ChatItem
+                id = id
+                name = name
+                unreadCount = unreadCount
+                lastMessage = lastMessage
+                isSelected = isSelected
+                onClick = onClick
+              }}}
+            {{/each}}
+          </ul>
+        {{else}}
+          {{#if searchValue}}
+            <p class="chat-list__empty">
+              Чаты не найдены
+            </p>
+          {{else}}
+            <ul class="chat-list"></ul>
+          {{/if}}
+        {{/if}}
       </nav>
     </aside>
   </div>

@@ -45,6 +45,10 @@
   line-height: 13px;
   font-weight: $font-weight-semibold;
   margin: 0;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chat-item__message {

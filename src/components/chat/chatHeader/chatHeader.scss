@@ -27,6 +27,10 @@
   margin: 0;
   font-size: 13px;
   font-weight: $font-weight-semibold;
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chat-header__menu-wrapper {
@@ -38,10 +42,8 @@
   top: 40px;
   right: 0;
   z-index: 10;
-
   min-width: 210px;
   padding: 8px 0;
-
   background: $color-white;
   border-radius: 12px;
   box-shadow: 0 0 6px rgb(0 0 0 / 14%);
@@ -51,10 +53,8 @@
   display: block;
   width: 100%;
   padding: 10px 15px;
-
   border: none;
   background: none;
-
   text-align: left;
   font-size: 12px;
   cursor: pointer;

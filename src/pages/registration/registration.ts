@@ -2,7 +2,7 @@ import { Block, HTTPError, type BlockOwnProps } from '../../framework';
 import { authController } from '../../controllers';
 import type { SignUpData } from '../../api';
 import { router } from '../../router';
-
+import { store } from '../../store';
 import template from './registration.hbs?raw';
 import { validatePasswordConfirmation } from '../../utils/validation';
 import { showInputError, validateInput } from '../../utils/formValidation';
@@ -74,7 +74,11 @@ export class RegistrationPage extends Block<RegistrationPageProps> {
       ) as unknown as SignUpData;
 
       try {
-        await authController.signUp(data);
+        const user = await authController.signUp(data);
+
+        store.setState({
+          user
+        });
         router.setAuthorized(true);
         router.go('/messenger');
       } catch (error: unknown) {

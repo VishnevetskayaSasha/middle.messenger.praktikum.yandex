@@ -6,6 +6,7 @@ import { authController, userController  } from '../../controllers';
 import type { UpdateProfileData, ChangePasswordData, User } from '../../api';
 import { router } from '../../router';
 import { getApiErrorReason } from '../../utils/getApiErrorReason';
+import { RESOURCES_URL } from '../../api/constants';
 
 import template from './profile.hbs?raw';
 
@@ -15,6 +16,8 @@ interface ProfilePageProps extends BlockOwnProps {
   mode: ProfileMode;
   user: User;
   userDisplayName: string;
+  avatarUrl: string;
+  avatarError: string;
   profileFormError: string;
   passwordFormError: string;
   isViewMode: boolean;
@@ -41,6 +44,8 @@ export class ProfilePage extends Block<ProfilePageProps> {
       mode: 'view',
       user,
       userDisplayName: user.display_name ?? user.first_name,
+      avatarUrl: ProfilePage.getAvatarUrl(user.avatar),
+      avatarError: '',
       profileFormError: '',
       passwordFormError: '',
       isViewMode: true,
@@ -62,12 +67,22 @@ export class ProfilePage extends Block<ProfilePageProps> {
     });
   }
 
+  private static getAvatarUrl(avatar: string | null): string {
+    return avatar ? `${RESOURCES_URL}${avatar}` : '/img/avatar.jpg';
+  }
+
   protected componentDidMount() {
+    this.initAvatar();
     this.initEditDataMode();
     this.initEditPasswordMode();
     this.initDataForm();
     this.initPasswordForm();
     this.initLogout();
+  }
+
+  private initAvatar(): void {
+    const avatarInput = this.refs.avatarInput as | HTMLInputElement | undefined;
+    avatarInput?.addEventListener( 'change', this.handleAvatarChange);
   }
 
   private initEditDataMode() {
@@ -267,4 +282,42 @@ export class ProfilePage extends Block<ProfilePageProps> {
       }
     });
   }
+
+
+
+  private handleAvatarChange = async ( event: Event): Promise<void> => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      const user = await userController.changeAvatar(formData);
+
+      store.setState({
+        user,
+      });
+
+      this.setProps({
+        user,
+        avatarUrl: ProfilePage.getAvatarUrl(user.avatar),
+        avatarError: '',
+      });
+    } catch (error: unknown) {
+      console.error(
+        'Не удалось изменить аватар',
+        error,
+      );
+
+      this.setProps({
+        avatarError:
+          'Не удалось загрузить аватар.',
+      });
+    }
+  };
 }

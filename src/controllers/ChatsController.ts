@@ -4,6 +4,7 @@ import { ChatsAPI,
   type ChatToken,
   type AddUsersToChatData,
   type RemoveUsersFromChatData,
+  type DeleteChatData,
   type User } from '../api';
 
 class ChatsController {
@@ -31,6 +32,10 @@ class ChatsController {
 
   public async removeUsers(data: RemoveUsersFromChatData): Promise<void> {
     return this.api.removeUsers(data);
+  }
+
+  public async deleteChat(data: DeleteChatData): Promise<void> {
+    return this.api.deleteChat(data);
   }
 }
 

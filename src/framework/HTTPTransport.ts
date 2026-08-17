@@ -16,6 +16,7 @@ interface RequestOptions {
   headers?: Record<string, string>;
   timeout?: number;
   responseType?: ResponseType;
+  cacheBust?: boolean;
 }
 
 interface RequestOptionsWithMethod extends RequestOptions {
@@ -129,16 +130,24 @@ export default class HTTPTransport {
       method,
       data,
       responseType,
+      cacheBust = false,
     } = options;
 
     return new Promise<TResponse>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
 
-      const requestUrl =
-        isGet && data && !(data instanceof FormData)
+      let requestUrl = isGet && data && !(data instanceof FormData)
           ? `${url}${queryStringify(data)}`
           : url;
+
+      if (isGet && cacheBust) {
+        const separator = requestUrl.includes('?')
+          ? '&'
+          : '?';
+
+        requestUrl += `${separator}_=${Date.now()}`;
+      }
 
       xhr.open(method, requestUrl);
 

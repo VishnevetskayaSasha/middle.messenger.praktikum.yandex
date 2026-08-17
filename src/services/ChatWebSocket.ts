@@ -52,11 +52,11 @@ export class ChatWebSocket {
 
   public sendMessage(message: string): void {
 
-    console.log(
-    'sendMessage:',
-    message,
-    this.socket?.readyState,
-  );
+  //   console.log(
+  //   'sendMessage:',
+  //   message,
+  //   this.socket?.readyState,
+  // );
 
     if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
       return;
@@ -71,7 +71,7 @@ export class ChatWebSocket {
   }
 
   private handleOpen = (): void => {
-    console.log('WebSocket connected');
+    //console.log('WebSocket connected');
 
     this.socket?.send(
       JSON.stringify({
@@ -101,7 +101,7 @@ export class ChatWebSocket {
       | ChatMessage[]
       | WebSocketServiceMessage = JSON.parse(event.data);
 
-    console.log('WebSocket message:', data);
+    //console.log('WebSocket message:', data);
 
     if (Array.isArray(data)) {
       this.onMessage?.(data, true);
@@ -125,7 +125,7 @@ export class ChatWebSocket {
   };
 
   private handleClose = (): void => {
-    console.log('WebSocket closed');
+    //console.log('WebSocket closed');
 
      if (this.pingInterval) {
       clearInterval(this.pingInterval);

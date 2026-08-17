@@ -10,18 +10,31 @@
 
   <section class="profile__content">
     <div class="profile__header">
-      <div class="profile__avatar-wrapper">
+      <label class="profile__avatar-wrapper">
         <img
-          src="img/avatar.jpg"
+          src="{{avatarUrl}}"
           alt="avatar"
           class="profile__avatar"
         />
-
         <span class="profile__avatar-overlay">
           Поменять<br>
           аватар
         </span>
-      </div>
+        <input
+          class="profile__avatar-input"
+          type="file"
+          name="avatar"
+          accept="image/*"
+          ref="avatarInput"
+        />
+      </label>
+
+      {{#if avatarError}}
+        <p class="profile__avatar-error">
+          {{avatarError}}
+        </p>
+      {{/if}}
+      
       {{{ Heading
         text = user.first_name
         modifier = "profile"

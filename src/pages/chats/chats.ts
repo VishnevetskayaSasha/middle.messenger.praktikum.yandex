@@ -1,31 +1,14 @@
 import { Block, HTTPError, type BlockOwnProps } from '../../framework';
 import { chatsController } from '../../controllers';
-import { CreateChatForm, Modal, AddUserForm, RemoveUserForm } from '../../components/modals';
+import { CreateChatForm, Modal, AddUserForm, RemoveUserForm, DeleteChatForm } from '../../components/modals';
+import { ChatSidebar } from '../../components/chat';
 import { store } from '../../store';
 import { ChatWebSocket, type ChatMessage } from '../../services';
 import { formatMessageTime } from '../../utils/formatMessageTime';
 
 import template from './chats.hbs?raw';
 
-interface ChatView {
-  id: number;
-  name: string;
-  avatar: string | null;
-  unreadCount: number;
-  lastMessage: {
-    text: string;
-    time: string;
-    isOwn: boolean;
-  } | null;
-  isSelected: boolean;
-  onClick: (id: number) => void;
-}
-
 interface ChatsPageProps extends BlockOwnProps {
-  chats: ChatView[];
-  formError: string;
-  chatsLoaded: boolean;
-  hasChats: boolean;
   activeChatId: number | null;
   activeChatTitle: string;
   activeChatAvatar: string | null;
@@ -41,7 +24,13 @@ interface ChatsPageProps extends BlockOwnProps {
   onAddUser?: () => void;
   onRemoveUser?: () => void;
   onCreateChat?: () => void;
-  onSelectChat?: (chatId: number) => void
+  onSelectChat?: (
+    chatId: number,
+    title: string,
+    avatar: string | null,
+  ) => void;
+  onDeleteChat?: () => void;
+  onActiveChatDeleted?: () => void;
 }
 
 export class ChatsPage extends Block<ChatsPageProps> {
@@ -51,13 +40,10 @@ export class ChatsPage extends Block<ChatsPageProps> {
   private addUserModal: Modal | null = null;
   private chatWebSocket = new ChatWebSocket();
   private removeUserModal: Modal | null = null;
+  private deleteChatModal: Modal | null = null;
 
   constructor() {
     super({
-      chats: [],
-      formError: '',
-      chatsLoaded: false,
-      hasChats: false,
       activeChatId: null,
       activeChatTitle: '',
       activeChatAvatar: null,
@@ -72,6 +58,8 @@ export class ChatsPage extends Block<ChatsPageProps> {
       onRemoveUser: this.handleRemoveUser,
       onCreateChat: this.openCreateChatModal,
       onSelectChat: this.selectChat,
+      onDeleteChat: this.handleDeleteChat,
+      onActiveChatDeleted: this.resetActiveChat,
     });
 
     this.chatWebSocket.setOnMessage(
@@ -79,17 +67,7 @@ export class ChatsPage extends Block<ChatsPageProps> {
     );
   }
 
-  protected componentDidMount(): void {
-    if (!this.props.chatsLoaded) {
-      void this.loadChats();
-    }
-
-    this.initCreateChatButton();
-  }
-
   protected componentWillUnmount(): void {
-    this.removeCreateChatButtonListeners();
-
     this.createChatModal?.close();
     this.createChatModal = null;
 
@@ -99,16 +77,9 @@ export class ChatsPage extends Block<ChatsPageProps> {
 
     this.removeUserModal?.close();
     this.removeUserModal = null;
-  }
 
-  private initCreateChatButton(): void {
-    const createChatButton = this.refs.createChatButton as | HTMLButtonElement | undefined;
-    createChatButton?.addEventListener('click', this.openCreateChatModal);
-  }
-
-  private removeCreateChatButtonListeners(): void {
-    const createChatButton = this.refs.createChatButton as | HTMLButtonElement | undefined;
-    createChatButton?.removeEventListener('click', this.openCreateChatModal);
+    this.deleteChatModal?.close();
+    this.deleteChatModal = null;
   }
 
   private openCreateChatModal = (): void => {
@@ -125,7 +96,8 @@ export class ChatsPage extends Block<ChatsPageProps> {
         });
 
         this.createChatModal?.close();
-        await this.loadChats();
+        this.createChatModal = null;
+        ChatSidebar.refresh();
       },
     });
 
@@ -140,92 +112,26 @@ export class ChatsPage extends Block<ChatsPageProps> {
     this.createChatModal.open(modalRoot);
   };
 
-  private async loadChats(): Promise<void> {
-    try {
-      const chats = await chatsController.getChats();
-      const currentUserLogin = store.getState().user?.login;
-
-      const chatViews: ChatView[] = chats.map(
-        (chat) => ({
-          id: chat.id,
-          name: chat.title,
-          avatar: chat.avatar,
-          unreadCount: chat.unread_count,
-          lastMessage:chat.last_message
-            ? {
-                text: chat.last_message.content,
-                time: formatMessageTime(chat.last_message.time),
-                isOwn: chat.last_message.user.login === currentUserLogin,
-              }
-            : null,
-          isSelected: chat.id === this.props.activeChatId,
-        onClick: this.selectChat,
-        }),
-      );
-
-      this.setProps({
-        chats: chatViews,
-        chatsLoaded: true,
-        hasChats: chatViews.length > 0,
-        formError: '',
-      });
-    } catch (error: unknown) {
-      if (error instanceof HTTPError) {
-        console.error(
-          'Ошибка загрузки чатов:',
-          error.response,
-        );
-      }
-
-      this.setProps({
-        formError:
-          'Не удалось загрузить список чатов.',
-        chatsLoaded: true,
-        hasChats: false,
-      });
-    }
-  }
-
-  private selectChat = (chatId: number): void => {
-    void this.loadChatToken(chatId);
-
-    const selectedChat = this.props.chats.find(
-      (chat) => chat.id === chatId,
-    );
-
-    if (!selectedChat) {
-      return;
-    }
-
-    const chats = this.props.chats.map((chat) => ({
-      ...chat,
-      isSelected: chat.id === chatId,
-    }));
-
+  private selectChat = (
+    chatId: number,
+    title: string,
+    avatar: string | null,
+  ): void => {
     this.setProps({
-      chats,
       activeChatId: chatId,
-      activeChatTitle: selectedChat.name,
-      activeChatAvatar: selectedChat.avatar,
+      activeChatTitle: title,
+      activeChatAvatar: avatar,
       messages: [],
+      messageViews: [],
+      hasMessages: false,
     });
 
-    this.clearUnreadCount(chatId);
+    void this.loadChatToken(chatId);
   };
 
-  private clearUnreadCount(chatId: number): void {
-    const chats = this.props.chats.map((chat) => ({
-      ...chat,
-      unreadCount: chat.id === chatId ? 0 : chat.unreadCount,
-    }));
-
-    this.setProps({
-      chats,
-    });
-  }
 
   private handleSendMessage = (message: string): void => {
-    console.log('handleSendMessage:', message);
+    //console.log('handleSendMessage:', message);
     this.chatWebSocket.sendMessage(message);
   };
 
@@ -288,6 +194,7 @@ export class ChatsPage extends Block<ChatsPageProps> {
 
           this.addUserModal?.close();
           this.addUserModal = null;
+          ChatSidebar.refresh();
         } catch (error: unknown) {
           if (error instanceof HTTPError) {
             console.error(
@@ -332,10 +239,8 @@ export class ChatsPage extends Block<ChatsPageProps> {
 
     try {
       const users = await chatsController.getChatUsers(chatId);
-
       const form = new RemoveUserForm({
         users,
-
         onRemoveUser: async (userId: number) => {
           try {
             await chatsController.removeUsers({
@@ -345,6 +250,7 @@ export class ChatsPage extends Block<ChatsPageProps> {
 
             this.removeUserModal?.close();
             this.removeUserModal = null;
+            ChatSidebar.refresh();
           } catch (error: unknown) {
             if (error instanceof HTTPError) {
               console.error(
@@ -413,4 +319,78 @@ export class ChatsPage extends Block<ChatsPageProps> {
       isOwn: message.user_id === currentUserId,
     }));
   }
+
+  private handleDeleteChat = (): void => {
+    const chatId = this.props.activeChatId;
+
+    if (chatId === null) {
+      return;
+    }
+
+    const modalRoot = this.refs.modalRoot as HTMLElement | undefined;
+
+    if (!modalRoot || this.deleteChatModal) {
+      return;
+    }
+
+    const form = new DeleteChatForm({
+      onSubmit: async () => {
+        try {
+          await chatsController.deleteChat({
+            chatId,
+          });
+
+          this.deleteChatModal?.close();
+          this.deleteChatModal = null;
+
+          this.resetActiveChat();
+
+          ChatSidebar.refresh();
+        } catch (error: unknown) {
+          if (error instanceof HTTPError) {
+            console.error(
+              'Ошибка удаления чата:',
+              error.response,
+            );
+          if (error.status === 403) {
+            form.setProps({
+              error:
+                'Вы не являетесь создателем чата, удалить его не получится.',
+            });
+          }
+
+            return;
+          }
+
+          console.error(
+            'Не удалось удалить чат',
+            error,
+          );
+        }
+      },
+    });
+
+    this.deleteChatModal = new Modal({
+      title: 'Удалить чат',
+      content: form,
+      onClose: () => {
+        this.deleteChatModal = null;
+      },
+    });
+
+    this.deleteChatModal.open(modalRoot);
+  };
+
+  private resetActiveChat = (): void => {
+    this.chatWebSocket.disconnect();
+
+    this.setProps({
+      activeChatId: null,
+      activeChatTitle: '',
+      activeChatAvatar: null,
+      messages: [],
+      messageViews: [],
+      hasMessages: false,
+    });
+  };
 }
