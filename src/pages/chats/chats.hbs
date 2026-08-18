@@ -1,0 +1,42 @@
+<main class="chats">
+  {{{ ChatSidebar
+    activeChatId = activeChatId
+    onCreateChat = onCreateChat
+    onSelectChat = onSelectChat
+    onActiveChatDeleted = onActiveChatDeleted
+  }}}
+
+  <div class="chats__content">
+    {{#if activeChatId}}
+      <div class="chats__conversation">
+        {{{ ChatHeader
+          title = activeChatTitle
+          avatar = activeChatAvatar
+          onAddUser = onAddUser
+          onRemoveUser = onRemoveUser
+          onDeleteChat = onDeleteChat
+        }}}
+
+        {{{ ChatMessages
+          messages = messageViews
+          hasMessages = hasMessages
+        }}}
+
+        {{{ ChatFooter
+          onSend = onSendMessage
+        }}}
+      </div>
+    {{else}}
+      <div class="chats__empty-wrapper">
+        <p class="chats__empty">
+          Выберите чат или создайте новый
+        </p>
+      </div>
+    {{/if}}
+  </div>
+
+  <div
+    class="chats__modal-root"
+    ref="modalRoot"
+  ></div>
+</main>

@@ -1,0 +1,76 @@
+<main class="auth">
+  <div class="auth__wrapper">
+     {{{ Heading
+      text = "Регистрация"
+     }}}
+
+    <form action="" method="post" class="auth__form">
+      {{{ Input
+        label = "Почта"
+        type = "text"
+        name = "email"
+        autocomplete = "email"
+      }}}
+
+      {{{ Input
+        label = "Логин"
+        type = "text"
+        name = "login"
+        autocomplete = "username"
+      }}}
+
+      {{{ Input
+        label = "Имя"
+        type = "text"
+        name = "first_name"
+        autocomplete = "name"
+      }}}
+
+      {{{ Input
+        label = "Фамилия"
+        type = "text"
+        name = "second_name"
+        autocomplete = "second-name"
+      }}}
+
+      {{{ Input
+        label = "Телефон"
+        type = "tel"
+        name = "phone"
+        autocomplete = "tel"
+      }}}
+
+      {{{ Input
+        label = "Пароль"
+        type = "password"
+        name = "password"
+        autocomplete = "password"
+      }}}
+
+      {{{ Input
+        label = "Пароль (ещё раз)"
+        type = "password"
+        name = "confirm_password"
+        autocomplete = "password"
+      }}}
+
+      <div class="auth__button-wrapper auth__button-wrapper_registration">
+        {{{ Button
+          label = "Зарегистрироваться"
+          modifier = "registration"
+          type = "submit"
+        }}}
+
+        {{{ FormError
+          text = formError
+        }}}
+      </div>
+
+      {{{ Link
+        modifier = "default"
+        href = "/messenger"
+        text = "Войти"
+      }}}
+    </form>
+  </div>
+</main>

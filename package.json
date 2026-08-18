@@ -1,0 +1,32 @@
+{
+  "name": "middle.messenger.praktikum.yandex",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "start": "npm run build && npm run preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "npm run typecheck && npm run lint:eslint && npm run lint:style",
+    "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:style": "stylelint \"src/**/*.{scss,css}\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
+    "sass": "^1.100.0",
+    "stylelint": "^17.14.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.62.1",
+    "vite": "^8.0.12"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.9"
+  }
+}

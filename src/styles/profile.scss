@@ -1,0 +1,123 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+.profile {
+  display: flex;
+  height: calc(100vh - 16px);
+}
+
+.profile__sidebar {
+  width: 64px;
+  border-right: 1px solid $color-line;
+  position: relative;
+  background: $color-bg;
+  @include flex-center;
+}
+
+.profile__back {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: $color-primary;
+  @include hover-opacity;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 9px;
+    width: 11px;
+    height: 1.6px;
+    background: $color-white;
+    transform: translateY(-50%);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 9px;
+    width: 5px;
+    height: 5px;
+    border-left: 1.6px solid $color-white;
+    border-bottom: 1.6px solid $color-white;
+    transform: translateY(-50%) rotate(45deg);
+  }
+}
+
+.profile__content {
+  width: 510px;
+  margin: 0 auto;
+  padding-top: 60px;
+}
+
+.profile__header {
+  text-align: center;
+}
+
+.profile__avatar-wrapper {
+  position: relative;
+  display: block;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 21px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover .profile__avatar-overlay {
+    opacity: 1;
+  }
+}
+
+.profile__avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  margin-bottom: 21px;
+  object-fit: cover;
+}
+
+.profile__avatar-overlay {
+  position: absolute;
+  inset: 0;
+  @include flex-center;
+  font-size: 13px;
+  line-height: 14px;
+  color: $color-white;
+  background: rgb(0 0 0 / 50%);
+  opacity: 0;
+  @include transition(opacity);
+  pointer-events: none;
+}
+
+.profile__info {
+  margin: 60px 0;
+}
+
+.profile__actions {
+  & .link {
+    text-align: left;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-line;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}
+
+.profile__avatar-input {
+  display: none;
+}
+
+.profile__avatar-error {
+  margin: 8px 0 0;
+  font-size: 11px;
+  text-align: center;
+  color: $color-important;
+}

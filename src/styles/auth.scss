@@ -1,0 +1,31 @@
+@use './mixins' as *;
+
+.auth {
+  margin: 0;
+  height: calc(100vh - 16px);
+  @include flex-center;
+}
+
+.auth__wrapper {
+  max-width: 340px;
+  box-shadow: 0 0 6px 0 rgb(0 0 0 / 14%);
+  border-radius: 16px;
+  padding: 50px 30px 30px;
+  margin: 0 auto;
+}
+
+.auth__form {
+  margin-top: 40px;
+}
+
+.auth__button-wrapper {
+  margin-bottom: 14px;
+}
+
+.auth__button-wrapper_login {
+  margin-top: 144px;
+}
+
+.auth__button-wrapper_registration {
+  margin-top: 62px;
+}

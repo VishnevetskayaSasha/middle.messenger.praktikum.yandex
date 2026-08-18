@@ -1,0 +1,19 @@
+<div class="profile-field">
+  <div class="profile-field__input-wrapper">
+    <label class="profile-field__label" for="{{name}}">
+      {{label}}
+    </label>
+
+    <input
+      class="profile-field__input"
+      id="{{name}}"
+      name="{{name}}"
+      type="{{type}}"
+      value="{{value}}"
+      {{#unless isEditable}}readonly{{/unless}}
+      {{#if autocomplete}}autocomplete="{{autocomplete}}"{{/if}}
+    />
+  </div>
+
+  <span class="profile-field__error"></span>
+</div>

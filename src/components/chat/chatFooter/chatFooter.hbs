@@ -1,0 +1,32 @@
+<footer class="chat-footer">
+  <button
+    class="chat-footer__attach"
+    type="button"
+    aria-label="Прикрепить файл"
+  >
+    <img
+      class="paper-clip__ico"
+      src="/img/paper-clip.svg"
+      alt="Скрепка"
+    >
+  </button>
+
+  <form
+    class="chat-footer__form"
+    ref="messageForm"
+  >
+    {{{ Input
+      type = "text"
+      name = "message"
+      label = "Сообщение"
+      autocomplete = "off"
+      modifier = "chat-message"
+    }}}
+
+    {{{ Button
+      type = "submit"
+      label = ""
+      modifier = "send-message"
+    }}}
+  </form>
+</footer>

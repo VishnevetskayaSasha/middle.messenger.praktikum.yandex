@@ -1,0 +1,34 @@
+<li class="chat-item{{#if isSelected}} chat-item_selected {{/if}}"
+  data-id="{{id}}"
+>
+  <img src="/img/avatar.jpg" alt="avatar" class="chat-item__avatar" />
+  <div class="chat-item__text-wrapper">
+    <div class="chat-item__wrapper">
+      <h2 class="chat-item__title">
+        {{name}}
+      </h2>
+      {{#with lastMessage}}
+        <time class="chat-item__date">
+          {{time}}
+        </time>
+      {{/with}}
+    </div>
+    <div class="chat-item__wrapper">
+      {{#with lastMessage}}
+        <div class="chat-item__message">
+          {{#if isOwn}}
+            <span class="chat-item__message-user">
+              Вы:
+            </span>
+          {{/if}}
+          {{text}}
+        </div>
+      {{/with}}
+      {{#if unreadCount}}
+        <span class="chat-item__unread-count">
+          {{unreadCount}}
+        </span>
+      {{/if}}
+    </div>
+  </div>
+</li>
