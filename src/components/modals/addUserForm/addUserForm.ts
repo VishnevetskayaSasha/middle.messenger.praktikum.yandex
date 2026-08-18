@@ -34,8 +34,9 @@ export class AddUserForm extends Block<AddUserFormProps> {
 
   protected componentDidMount(): void {
     const form = this.refs.form as HTMLFormElement | undefined;
-    const loginInput = form?.elements.namedItem('login') as HTMLInputElement | null;
+    form?.addEventListener('submit', this.handleSubmit);
 
+    const loginInput = form?.elements.namedItem('login') as HTMLInputElement | null;
     loginInput?.addEventListener('input', this.handleLoginInput);
     this.initUserButtons();
 
@@ -53,8 +54,9 @@ export class AddUserForm extends Block<AddUserFormProps> {
 
   protected componentWillUnmount(): void {
     const form = this.refs.form as HTMLFormElement | undefined;
-    const loginInput = form?.elements.namedItem('login') as HTMLInputElement | null;
+    form?.removeEventListener('submit', this.handleSubmit);
 
+    const loginInput = form?.elements.namedItem('login') as HTMLInputElement | null;
     loginInput?.removeEventListener('input', this.handleLoginInput);
 
     if (this.searchTimeout) {
@@ -124,4 +126,8 @@ export class AddUserForm extends Block<AddUserFormProps> {
       });
     }
   }
+
+  private handleSubmit = (event: SubmitEvent): void => {
+    event.preventDefault();
+  };
 }
