@@ -1,11 +1,13 @@
-# Sprint 3
+# Sprint 4
 
 ## Описание проекта
 
-Учебный проект, разработанный в рамках спринта 3 в курсе [«Мидл фронтенд‑разработчик»](https://practicum.yandex.ru/middle-frontend/?from=profile_overview)
+Учебный проект, разработанный в рамках спринта 4 в курсе [«Мидл фронтенд‑разработчик»](https://practicum.yandex.ru/middle-frontend/?from=profile_overview)
 
 Проект представляет собой веб-приложение messenger
-В третьем спринте приложение было подключено к [API](https://ya-praktikum.tech/api/v2/swagger/), добавлены роутинг, авторизация, работа с профилем и чатами, а также обмен сообщениями через WebSocket
+В проекте реализованы роутинг, авторизация, работа с профилем и чатами, а также обмен сообщениями через WebSocket.
+
+В четвёртом спринте добавлены тесты для роутера, модуля отправки запросов и компонентов, улучшена обработка ошибок HTTP и WebSocket, настроена Content Security Policy и добавлен pre-commit hook с автоматическим запуском линтеров и тестов.
 
 ## Функциональность
 
@@ -44,6 +46,16 @@
 
 Реализован Router с поддержкой History API.
 
+### Тестирование
+
+Тестами покрыты:
+- Router;
+- HTTPTransport;
+- базовый класс Block;
+- компоненты Button, Input, ChatItem, Modal и ChatFooter.
+
+Для тестирования используется Vitest с окружением jsdom.
+
 ## Страницы проекта
 
 - Страница входа — `https://vishnevetskayasasha-messenger.netlify.app/`
@@ -67,15 +79,19 @@
 - `npm run build` — сборка проекта
 - `npm run start` — сборка и запуск production preview
 - `npm run lint` — запуск ESLint, Stylelint и проверки TypeScript
+- `npm test` — запуск тестов в watch-режиме
+- `npm run test:run` — однократный запуск всех тестов
 
 
 ## Технологии
 * TypeScript;
 * Vite;
+* Vitest;
 * Handlebars;
 * SCSS;
 * Netlify;
 * ESLint, Stylelint;
+* Husky;
 * XMLHttpRequest;
 * WebSocket;
 * History API.

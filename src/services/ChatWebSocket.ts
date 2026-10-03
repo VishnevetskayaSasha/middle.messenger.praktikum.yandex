@@ -96,24 +96,26 @@ export class ChatWebSocket {
   };
 
   private handleMessage = (event: MessageEvent): void => {
-    const data:
-      | ChatMessage
-      | ChatMessage[]
-      | WebSocketServiceMessage = JSON.parse(event.data);
+    try {
+      const data:
+        | ChatMessage
+        | ChatMessage[]
+        | WebSocketServiceMessage = JSON.parse(event.data);
 
-    //console.log('WebSocket message:', data);
+      if (Array.isArray(data)) {
+        this.onMessage?.(data, true);
+        return;
+      }
 
-    if (Array.isArray(data)) {
-      this.onMessage?.(data, true);
-      return;
-    }
+      if (data.type === 'pong') {
+        return;
+      }
 
-    if (data.type === 'pong') {
-      return;
-    }
-
-    if (data.type === 'message') {
-      this.onMessage?.([data], false);
+      if (data.type === 'message') {
+        this.onMessage?.([data], false);
+      }
+    } catch (error) {
+      console.error('Failed to parse WebSocket message:', error);
     }
   };
 
@@ -124,12 +126,20 @@ export class ChatWebSocket {
     );
   };
 
-  private handleClose = (): void => {
-    //console.log('WebSocket closed');
-
-     if (this.pingInterval) {
+  private handleClose = (event: CloseEvent): void => {
+    if (this.pingInterval) {
       clearInterval(this.pingInterval);
       this.pingInterval = null;
+    }
+
+    if (event.wasClean) {
+      console.log(
+        `WebSocket connection closed: ${event.code} ${event.reason}`,
+      );
+    } else {
+      console.error(
+        `WebSocket connection interrupted: ${event.code} ${event.reason}`,
+      );
     }
   };
 
