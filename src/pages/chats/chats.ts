@@ -5,6 +5,7 @@ import { ChatSidebar } from '../../components/chat';
 import { store } from '../../store';
 import { ChatWebSocket, type ChatMessage } from '../../services';
 import { formatMessageTime } from '../../utils/formatMessageTime';
+import { RESOURCES_URL } from '../../api/constants';
 
 import template from './chats.hbs?raw';
 
@@ -91,13 +92,18 @@ export class ChatsPage extends Block<ChatsPageProps> {
 
     const form = new CreateChatForm({
       onSubmit: async (title: string) => {
-        await chatsController.createChat({
-          title,
-        });
+        try {
+          await chatsController.createChat({
+            title,
+          });
 
-        this.createChatModal?.close();
-        this.createChatModal = null;
-        ChatSidebar.refresh();
+          this.createChatModal?.close();
+          this.createChatModal = null;
+          ChatSidebar.refresh();
+        } catch (error: unknown) {
+          console.error('Не удалось создать чат:', error);
+          throw error;
+        }
       },
     });
 
@@ -120,7 +126,7 @@ export class ChatsPage extends Block<ChatsPageProps> {
     this.setProps({
       activeChatId: chatId,
       activeChatTitle: title,
-      activeChatAvatar: avatar,
+      activeChatAvatar: avatar ? `${RESOURCES_URL}${avatar}` : '/img/avatar.jpg',
       messages: [],
       messageViews: [],
       hasMessages: false,
@@ -147,13 +153,13 @@ export class ChatsPage extends Block<ChatsPageProps> {
       }
 
       const { token } = await chatsController.getChatToken(chatId);
-        this.chatWebSocket.disconnect();
+      this.chatWebSocket.disconnect();
 
-        this.chatWebSocket.connect(
-          user.id,
-          chatId,
-          token,
-        );
+      this.chatWebSocket.connect(
+        user.id,
+        chatId,
+        token,
+      );
     } catch (error: unknown) {
       if (error instanceof HTTPError) {
         console.error(
