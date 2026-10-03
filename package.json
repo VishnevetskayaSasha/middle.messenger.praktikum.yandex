@@ -16,11 +16,13 @@
     "lint:eslint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:style": "stylelint \"src/**/*.{scss,css}\"",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.6.0",
+    "husky": "^9.1.7",
     "jsdom": "^30.0.1",
     "sass": "^1.100.0",
     "stylelint": "^17.14.0",
