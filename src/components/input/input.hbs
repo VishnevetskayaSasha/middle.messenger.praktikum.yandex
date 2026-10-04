@@ -1,0 +1,15 @@
+<div class="input {{#if modifier}}input_{{modifier}}{{/if}}">
+  <label class="input__label" for="{{name}}">{{label}}</label>
+
+  <input
+    class = "input__field"
+    id = "{{name}}"
+    type = "{{type}}"
+    name = "{{name}}"
+    placeholder = "{{label}}"
+    value = "{{value}}"
+    {{#if autocomplete}}autocomplete="{{autocomplete}}"{{/if}}
+  />
+
+  <span class="input__error"></span>
+</div>

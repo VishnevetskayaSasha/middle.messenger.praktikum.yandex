@@ -1,0 +1,41 @@
+<main class="auth">
+  <div class="auth__wrapper">
+     {{{ Heading
+      text = "Вход"
+     }}}
+
+    <form action="" method="post" class="auth__form">
+      {{{ Input
+        label = "Логин"
+        type = "text"
+        name = "login"
+        autocomplete = "username"
+      }}}
+
+      {{{ Input
+        label = "Пароль"
+        type = "password"
+        name = "password"
+        autocomplete = "current-password"
+      }}}
+
+      <div class="auth__button-wrapper auth__button-wrapper_login">
+        {{{ Button
+          label = "Авторизоваться"
+          modifier = "login"
+          type = "submit"
+        }}}
+
+         {{{ FormError
+          text = formError
+        }}}
+      </div>
+
+      {{{ Link
+        modifier = "default"
+        href = "/sign-up"
+        text = "Нет аккаунта?"
+      }}}
+    </form>
+  </div>
+</main>

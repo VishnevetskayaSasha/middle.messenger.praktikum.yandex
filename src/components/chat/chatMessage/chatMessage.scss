@@ -1,0 +1,37 @@
+@use '../../../styles/variables' as *;
+
+.chat-message {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.chat-message_own {
+  justify-content: flex-end;
+}
+
+.chat-message__content {
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 0 12px 12px;
+  background: $color-chat-hover;
+  font-size: 12px;
+}
+
+.chat-message__time {
+  margin-left: 8px;
+  font-size: 9px;
+}
+
+.chat-message_own .chat-message__content {
+  border-radius: 12px 12px 0;
+  background: $color-primary;
+  color: $color-white;
+}
+
+.chat-message_own .chat-message__time {
+  color: $color-white;
+}
+
+
+

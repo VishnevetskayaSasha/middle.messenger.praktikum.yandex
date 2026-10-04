@@ -1,0 +1,32 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+.chats {
+  display: flex;
+}
+
+.chats__content {
+  flex: 1;
+  flex-direction: column;
+  height: 100vh;
+  @include flex-between;
+}
+
+.chats__empty-wrapper {
+  flex: 1;
+  @include flex-center;
+}
+
+.chats__empty {
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.chats__conversation {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  min-height: 0;
+}

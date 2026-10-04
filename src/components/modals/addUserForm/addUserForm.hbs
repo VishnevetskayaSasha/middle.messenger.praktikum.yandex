@@ -1,0 +1,44 @@
+<form
+  class="add-user-form"
+  ref="form"
+>
+  {{{ Input
+    type = "text"
+    name = "login"
+    label = "Логин"
+    autocomplete = "off"
+    value = login
+    modifier = "popup"
+  }}}
+
+  {{#if users.length}}
+    <div class="user-list">
+      {{#each users}}
+        <div class="user-list__item">
+          <div class="user-list__info">
+            <p class="user-list__login">
+              {{login}}
+            </p>
+
+            <p class="user-list__name">
+              {{first_name}} {{second_name}}
+            </p>
+          </div>
+
+          {{{ Button
+            type = "button"
+            label = "Выбрать"
+            modifier = "user-action"
+            ref = buttonRef
+          }}}
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if error}}
+    <p class="add-user-form__error">
+      {{error}}
+    </p>
+  {{/if}}
+</form>

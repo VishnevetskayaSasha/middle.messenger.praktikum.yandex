@@ -1,0 +1,63 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.button {
+  padding: 12px 0;
+  width: 100%;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  background: $color-primary;
+  color: $color-white;
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: $font-weight-medium;
+  opacity: 1;
+  cursor: pointer;
+  @include hover-opacity;
+}
+
+.button_modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: $color-muted;
+  font-size: 18px;
+}
+
+.button_chat-menu {
+  width: 30px;
+  height: 30px;
+  background: none;
+  color: $color-text;
+}
+
+.button_send-message {
+  position: relative;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+
+  &::before {
+    content: '→';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    font-size: 18px;
+    line-height: 1;
+  }
+}
+
+.button_user-action{
+  width: auto;
+  padding: 8px 14px;
+  flex-shrink: 0;
+}

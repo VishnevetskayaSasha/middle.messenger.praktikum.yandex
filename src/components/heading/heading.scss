@@ -1,0 +1,20 @@
+@use '../../styles/variables' as *;
+
+.heading {
+  margin: 0;
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: $font-weight-medium;
+  text-align: center;
+}
+
+.heading_error {
+  font-size: 40px;
+  line-height: 40px;
+}
+
+.heading_profile {
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: $font-weight-semibold;
+}

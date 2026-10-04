@@ -1,0 +1,14 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/user-list';
+
+.remove-user-form {
+  width: 100%;
+}
+
+.remove-user-form__empty {
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  color: $color-important;
+}
+

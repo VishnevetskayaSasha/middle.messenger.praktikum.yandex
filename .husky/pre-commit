@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+npm run lint:eslint
+npm run lint:style
+npm run test:run

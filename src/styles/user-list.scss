@@ -1,0 +1,42 @@
+@use './variables' as *;
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.user-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid $color-line;
+  border-radius: 10px;
+}
+
+.user-list__info {
+  min-width: 0;
+}
+
+.user-list__login {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.user-list__name {
+  margin: 0;
+  font-size: 12px;
+  color: $color-muted;
+}
+
+.user-list__empty {
+  margin: 0;
+  font-size: 13px;
+  color: $color-muted;
+  text-align: center;
+}

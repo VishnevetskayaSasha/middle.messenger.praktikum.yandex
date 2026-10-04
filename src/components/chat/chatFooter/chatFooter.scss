@@ -1,0 +1,35 @@
+@use '../../../styles/variables' as *;
+
+.chat-footer {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  padding: 30px 20px 10px;
+  border-top: 1px solid $color-line;
+}
+
+.chat-footer__form {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  width: 100%;
+}
+
+.chat-footer__attach {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.paper-clip__ico {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
